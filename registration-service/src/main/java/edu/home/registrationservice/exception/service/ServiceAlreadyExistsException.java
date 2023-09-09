@@ -1,4 +1,4 @@
-package edu.home.registrationservice.exception;
+package edu.home.registrationservice.exception.service;
 
 public class ServiceAlreadyExistsException extends RuntimeException {
 

@@ -19,10 +19,10 @@ public class EventRegistrationService {
     }
 
     public void addEvent(AddEventDTO addEventDTO) {
-        DomainApp domainApp = domainAppRepository.getByName(addEventDTO.getEventDomainServiceName());
-
-        Event event = new Event();
-        event.setName(addEventDTO.getEventName());
-        event.setDomainService(domainApp);
+//        DomainApp domainApp = domainAppRepository.getByName(addEventDTO.getEventDomainServiceName());
+//
+//        Event event = new Event();
+//        event.setName(addEventDTO.getEventName());
+//        event.setDomainService(domainApp);
     }
 }
