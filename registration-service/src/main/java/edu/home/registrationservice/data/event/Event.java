@@ -13,6 +13,7 @@ public class Event {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_id")
     private DomainApp domainApp;
 
     public Long getId() {
@@ -27,11 +28,11 @@ public class Event {
         this.name = name;
     }
 
-    public DomainApp getDomainService() {
+    public DomainApp getDomainApp() {
         return domainApp;
     }
 
-    public void setDomainService(DomainApp domainApp) {
+    public void setDomainApp(DomainApp domainApp) {
         this.domainApp = domainApp;
     }
 }

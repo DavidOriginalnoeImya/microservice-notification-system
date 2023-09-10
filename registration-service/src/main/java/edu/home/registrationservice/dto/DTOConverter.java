@@ -3,6 +3,7 @@ package edu.home.registrationservice.dto;
 import edu.home.registrationservice.data.event.Event;
 import edu.home.registrationservice.data.parameter.Parameter;
 import edu.home.registrationservice.data.service.DomainApp;
+import edu.home.registrationservice.dto.event.AddEventDTO;
 import edu.home.registrationservice.dto.service.AddServiceDTO;
 
 public class DTOConverter {
@@ -14,9 +15,9 @@ public class DTOConverter {
         return domainApp;
     }
 
-    public static Event convertFromDTO(EventRegistrationDTO eventRegistrationDTO) {
+    public static Event convertFromDTO(AddEventDTO addEventDTO) {
         Event event = new Event();
-        event.setName(eventRegistrationDTO.getEventId());
+        event.setName(addEventDTO.getEventName());
 
         return event;
     }
@@ -34,5 +35,12 @@ public class DTOConverter {
         domainAppDTO.setDomainAppAddress(domainApp.getAddress());
 
         return domainAppDTO;
+    }
+
+    public static EventDTO convertToDTO(Event event) {
+        EventDTO eventDTO = new EventDTO();
+        eventDTO.setName(event.getName());
+
+        return eventDTO;
     }
 }
