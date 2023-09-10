@@ -3,8 +3,10 @@ package edu.home.registrationservice.data.service;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "service")
 public class DomainApp {
 
     @Id
