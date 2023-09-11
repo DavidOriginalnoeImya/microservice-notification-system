@@ -5,18 +5,13 @@ import edu.home.registrationservice.data.service.DomainAppRepository;
 import edu.home.registrationservice.dto.DTOConverter;
 import edu.home.registrationservice.dto.DomainAppDTO;
 import edu.home.registrationservice.dto.service.AddServiceDTO;
-import edu.home.registrationservice.exception.service.ServiceAlreadyExistsException;
-import edu.home.registrationservice.exception.service.ServiceDoesntExistException;
+import edu.home.registrationservice.exception.EntityAlreadyExistsException;
+import edu.home.registrationservice.exception.EntityDoesntExistException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-/**
- * TODO: изменить гениальное имя класса
- */
 
 @Service
 public class DomainAppService {
@@ -39,7 +34,7 @@ public class DomainAppService {
     public DomainAppDTO getDomainApp(String name) {
         DomainApp domainApp = domainAppRepository
                 .getByName(name)
-                .orElseThrow(ServiceDoesntExistException::new);
+                .orElseThrow(() -> new EntityDoesntExistException("Service doesn't exist"));
 
         return DTOConverter.convertToDTO(domainApp);
     }
@@ -51,7 +46,7 @@ public class DomainAppService {
             return DTOConverter.convertToDTO(domainApp);
         }
         else {
-            throw new ServiceAlreadyExistsException();
+            throw new EntityAlreadyExistsException("Service with this name and address already exists");
         }
     }
 }

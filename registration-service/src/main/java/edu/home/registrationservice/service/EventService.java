@@ -9,7 +9,6 @@ import edu.home.registrationservice.dto.EventDTO;
 import edu.home.registrationservice.dto.event.AddEventDTO;
 import edu.home.registrationservice.exception.EntityDoesntExistException;
 import edu.home.registrationservice.exception.EntityAlreadyExistsException;
-import edu.home.registrationservice.exception.service.ServiceDoesntExistException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class EventService {
     public EventDTO addEvent(AddEventDTO addEventDTO) {
         DomainApp domainApp = domainAppRepository
                 .getByName(addEventDTO.getEventDomainServiceName())
-                .orElseThrow(ServiceDoesntExistException::new);
+                .orElseThrow(() -> new EntityDoesntExistException("Service doesn't exist"));
 
         if (!eventRepository.existsByName(addEventDTO.getEventName())) {
             Event event = DTOConverter.convertFromDTO(addEventDTO);

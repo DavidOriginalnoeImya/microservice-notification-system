@@ -3,14 +3,14 @@ package edu.home.registrationservice.rest;
 import edu.home.registrationservice.dto.DomainAppDTO;
 import edu.home.registrationservice.dto.ErrorDTO;
 import edu.home.registrationservice.dto.service.AddServiceDTO;
-import edu.home.registrationservice.exception.service.ServiceAlreadyExistsException;
-import edu.home.registrationservice.exception.service.ServiceDoesntExistException;
+import edu.home.registrationservice.exception.EntityAlreadyExistsException;
+import edu.home.registrationservice.exception.EntityDoesntExistException;
 import edu.home.registrationservice.service.DomainAppService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -35,7 +35,7 @@ public class DomainAppRest {
             return ResponseEntity
                     .ok(domainAppService.getDomainApp(name));
         }
-        catch (ServiceDoesntExistException e) {
+        catch (EntityDoesntExistException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ErrorDTO(e.getMessage()));
@@ -45,15 +45,15 @@ public class DomainAppRest {
 
 
     @PostMapping
-    public ResponseEntity<?> addDomainApp(AddServiceDTO addServiceDTO) throws URISyntaxException {
+    public ResponseEntity<?> addDomainApp(HttpServletRequest httpRequest, AddServiceDTO addServiceDTO) {
         try {
             DomainAppDTO domainAppDTO = domainAppService.addDomainApp(addServiceDTO);
 
             return ResponseEntity
-                    .created(new URI("/api/services/" + domainAppDTO.getDomainAppName()))
+                    .created(URI.create(httpRequest.getRequestURL() + "/" + domainAppDTO.getDomainAppName()))
                     .body(domainAppDTO);
         }
-        catch (ServiceAlreadyExistsException e) {
+        catch (EntityAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ErrorDTO(e.getMessage()));
