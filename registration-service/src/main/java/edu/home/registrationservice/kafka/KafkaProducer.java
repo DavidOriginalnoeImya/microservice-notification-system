@@ -1,11 +1,12 @@
-package edu.home.registrationservice.service.kafka;
+package edu.home.registrationservice.kafka;
 
-import edu.home.registrationservice.dto.kafka.AddEntityMessageDTO;
+import edu.home.rsmessage.AddEntityMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class KafkaProducer {
 
     @Value("${spring.kafka.producer.add-entity-topic}")
@@ -17,7 +18,7 @@ public class KafkaProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendAddEntityMessage(AddEntityMessageDTO addEntityMessageDTO) {
+    public void sendAddEntityMessage(AddEntityMessage addEntityMessageDTO) {
         kafkaTemplate.send(addEntityTopicName, addEntityMessageDTO);
     }
 
