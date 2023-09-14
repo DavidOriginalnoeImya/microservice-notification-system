@@ -1,4 +1,4 @@
-package edu.home.registrationservice.rest;
+package edu.home.registrationservice.controller;
 
 import edu.home.registrationservice.dto.ErrorDTO;
 import edu.home.registrationservice.dto.EventDTO;
@@ -17,13 +17,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
-public class EventRest {
+public class EventController {
 
     private final EventService eventService;
 
     private final KafkaProducer kafkaProducer;
 
-    public EventRest(EventService eventService, KafkaProducer kafkaProducer) {
+    public EventController(EventService eventService, KafkaProducer kafkaProducer) {
         this.eventService = eventService;
         this.kafkaProducer = kafkaProducer;
     }

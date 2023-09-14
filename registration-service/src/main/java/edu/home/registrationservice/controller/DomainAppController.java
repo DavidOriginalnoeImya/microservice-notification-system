@@ -1,4 +1,4 @@
-package edu.home.registrationservice.rest;
+package edu.home.registrationservice.controller;
 
 import edu.home.registrationservice.dto.DomainAppDTO;
 import edu.home.registrationservice.dto.ErrorDTO;
@@ -7,7 +7,6 @@ import edu.home.registrationservice.exception.EntityAlreadyExistsException;
 import edu.home.registrationservice.exception.EntityDoesntExistException;
 import edu.home.registrationservice.service.DomainAppService;
 import edu.home.registrationservice.kafka.KafkaProducer;
-import edu.home.rsmessage.AddEventMessage;
 import edu.home.rsmessage.AddServiceMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +17,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/services")
-public class DomainAppRest {
+public class DomainAppController {
 
     private final DomainAppService domainAppService;
 
     private final KafkaProducer kafkaProducer;
 
-    public DomainAppRest(DomainAppService domainAppService, KafkaProducer kafkaProducer) {
+    public DomainAppController(DomainAppService domainAppService, KafkaProducer kafkaProducer) {
         this.domainAppService = domainAppService;
         this.kafkaProducer = kafkaProducer;
     }

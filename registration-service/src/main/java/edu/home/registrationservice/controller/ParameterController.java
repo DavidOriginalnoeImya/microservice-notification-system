@@ -1,4 +1,4 @@
-package edu.home.registrationservice.rest;
+package edu.home.registrationservice.controller;
 
 import edu.home.registrationservice.converter.ParameterInputTypeConverter;
 import edu.home.registrationservice.dto.ErrorDTO;
@@ -19,13 +19,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/parameters")
-public class ParameterRest {
+public class ParameterController {
 
     private final ParameterService parameterService;
 
     private final KafkaProducer kafkaProducer;
 
-    public ParameterRest(ParameterService parameterService, KafkaProducer kafkaProducer) {
+    public ParameterController(ParameterService parameterService, KafkaProducer kafkaProducer) {
         this.parameterService = parameterService;
         this.kafkaProducer = kafkaProducer;
     }
