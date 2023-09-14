@@ -4,6 +4,7 @@ import edu.home.registrationservice.data.event.Event;
 import edu.home.registrationservice.data.parameter.Parameter;
 import edu.home.registrationservice.data.service.DomainApp;
 import edu.home.registrationservice.dto.event.AddEventDTO;
+import edu.home.registrationservice.dto.parameter.AddParameterDTO;
 import edu.home.registrationservice.dto.service.AddServiceDTO;
 
 public class DTOConverter {
@@ -22,13 +23,6 @@ public class DTOConverter {
         return event;
     }
 
-    public static Parameter convertFromDTO(ParameterRegistrationDTO parameterRegistrationDTO) {
-        Parameter parameter = new Parameter();
-        parameter.setName(parameterRegistrationDTO.getParameterId());
-
-        return parameter;
-    }
-
     public static DomainAppDTO convertToDTO(DomainApp domainApp) {
         DomainAppDTO domainAppDTO = new DomainAppDTO();
         domainAppDTO.setDomainAppName(domainApp.getName());
@@ -42,5 +36,19 @@ public class DTOConverter {
         eventDTO.setName(event.getName());
 
         return eventDTO;
+    }
+
+    public static ParameterDTO convertToDTO(Parameter parameter) {
+        ParameterDTO parameterDTO = new ParameterDTO();
+        parameterDTO.setParameterName(parameter.getName());
+
+        return parameterDTO;
+    }
+
+    public static Parameter convertFromDTO(AddParameterDTO addParameterDTO) {
+        Parameter parameter = new Parameter();
+        parameter.setName(addParameterDTO.getParameterName());
+
+        return parameter;
     }
 }
