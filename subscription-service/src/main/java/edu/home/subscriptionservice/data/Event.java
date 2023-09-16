@@ -1,5 +1,6 @@
 package edu.home.subscriptionservice.data;
 
+import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class Event {
     private boolean defaultChecked;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Service service;
+    private DomainApp domainApp;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Parameter> parameters = new ArrayList<>();
@@ -44,12 +45,12 @@ public class Event {
         this.caption = caption;
     }
 
-    public Service getService() {
-        return service;
+    public DomainApp getService() {
+        return domainApp;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setService(DomainApp domainApp) {
+        this.domainApp = domainApp;
     }
 
     public boolean isDefaultChecked() {

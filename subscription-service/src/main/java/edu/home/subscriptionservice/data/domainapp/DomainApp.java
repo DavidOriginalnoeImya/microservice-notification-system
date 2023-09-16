@@ -1,5 +1,6 @@
-package edu.home.subscriptionservice.data;
+package edu.home.subscriptionservice.data.domainapp;
 
+import edu.home.subscriptionservice.data.Event;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 import static jakarta.persistence.CascadeType.*;
 
 @Entity
-public class Service {
+public class DomainApp {
 
     @Id
     @GeneratedValue
