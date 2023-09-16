@@ -1,5 +1,9 @@
 package edu.home.rsmessage;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+@JsonDeserialize(builder = AddEventMessage.Builder.class)
 public class AddEventMessage extends AddEntityMessage {
 
     private String serviceName;
@@ -9,6 +13,7 @@ public class AddEventMessage extends AddEntityMessage {
         this.serviceName = builder.serviceName;
     }
 
+    @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder extends AddEntityMessage.Builder<Builder> {
 
         private String serviceName;

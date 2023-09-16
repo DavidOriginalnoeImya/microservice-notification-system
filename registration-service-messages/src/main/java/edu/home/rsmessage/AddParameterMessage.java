@@ -1,7 +1,11 @@
 package edu.home.rsmessage;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.util.List;
 
+@JsonDeserialize(builder = AddParameterMessage.Builder.class)
 public class AddParameterMessage extends AddEntityMessage {
 
     private final InputType inputType;
@@ -24,6 +28,7 @@ public class AddParameterMessage extends AddEntityMessage {
         INPUT, CHECKBOX, SELECT, MULTISELECT
     }
 
+    @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder extends AddEntityMessage.Builder<Builder> {
 
         private InputType inputType;
