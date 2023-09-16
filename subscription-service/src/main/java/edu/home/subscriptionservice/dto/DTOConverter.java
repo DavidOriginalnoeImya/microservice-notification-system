@@ -1,6 +1,7 @@
 package edu.home.subscriptionservice.dto;
 
 import edu.home.subscriptionservice.data.domainapp.DomainApp;
+import edu.home.subscriptionservice.data.event.Event;
 
 public class DTOConverter {
 
@@ -18,5 +19,13 @@ public class DTOConverter {
         domainApp.setCaption(addServiceDTO.getEntityCaption());
 
         return domainApp;
+    }
+
+    public static Event convertFromDTO(AddEventDTO addEventDTO) {
+        Event event = new Event();
+        event.setName(addEventDTO.getEntityName());
+        event.setCaption(addEventDTO.getEntityCaption());
+
+        return event;
     }
 }

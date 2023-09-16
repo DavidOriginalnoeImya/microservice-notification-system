@@ -1,6 +1,6 @@
 package edu.home.subscriptionservice.data.domainapp;
 
-import edu.home.subscriptionservice.data.Event;
+import edu.home.subscriptionservice.data.event.Event;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import java.util.List;
 import static jakarta.persistence.CascadeType.*;
 
 @Entity
+@Table(name = "service")
 public class DomainApp {
 
     @Id
@@ -18,9 +19,6 @@ public class DomainApp {
     private String name;
 
     private String caption;
-
-    @OneToMany(cascade = { PERSIST, REMOVE })
-    private List<Event> events = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -40,13 +38,5 @@ public class DomainApp {
 
     public void setCaption(String caption) {
         this.caption = caption;
-    }
-
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void addEvent(Event event) {
-        events.add(event);
     }
 }

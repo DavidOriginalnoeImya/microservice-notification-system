@@ -1,25 +1,25 @@
 package edu.home.subscriptionservice.kafka;
 
 import edu.home.rsmessage.AddEntityMessage;
-import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import edu.home.subscriptionservice.dto.AddEntityDTO;
+import edu.home.subscriptionservice.dto.AddEventDTO;
 import edu.home.subscriptionservice.dto.AddServiceDTO;
 import edu.home.subscriptionservice.kafka.message.handle.MessageHandlerFactory;
 import edu.home.subscriptionservice.service.DomainAppService;
 import edu.home.subscriptionservice.service.EntityService;
-import jakarta.annotation.PostConstruct;
+import edu.home.subscriptionservice.service.EventService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Component
 class KafkaConsumer {
 
     private final Map<Class<?>, Class<? extends EntityService>> services = Map.of(
-            AddServiceDTO.class, DomainAppService.class
+            AddServiceDTO.class, DomainAppService.class,
+            AddEventDTO.class, EventService.class
     );
 
     private final ApplicationContext applicationContext;

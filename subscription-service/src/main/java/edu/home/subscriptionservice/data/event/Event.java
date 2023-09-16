@@ -1,10 +1,7 @@
-package edu.home.subscriptionservice.data;
+package edu.home.subscriptionservice.data.event;
 
 import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Event {
@@ -21,9 +18,6 @@ public class Event {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private DomainApp domainApp;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Parameter> parameters = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -59,13 +53,5 @@ public class Event {
 
     public void setDefaultChecked(boolean defaultChecked) {
         this.defaultChecked = defaultChecked;
-    }
-
-    public List<Parameter> getParameters() {
-        return parameters;
-    }
-
-    public void addParameter(Parameter parameter) {
-        parameters.add(parameter);
     }
 }

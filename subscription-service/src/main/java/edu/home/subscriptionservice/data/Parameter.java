@@ -1,5 +1,6 @@
 package edu.home.subscriptionservice.data;
 
+import edu.home.subscriptionservice.data.event.Event;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
