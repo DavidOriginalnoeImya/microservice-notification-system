@@ -1,15 +1,12 @@
 package edu.home.subscriptionservice.service;
 
-import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import edu.home.subscriptionservice.data.domainapp.DomainAppRepository;
-import edu.home.subscriptionservice.dto.AddEntityDTO;
 import edu.home.subscriptionservice.dto.AddServiceDTO;
 import edu.home.subscriptionservice.dto.DTOConverter;
-import edu.home.subscriptionservice.dto.ServiceDTO;
+import edu.home.subscriptionservice.dto.DomainAppDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +18,7 @@ public class DomainAppService implements EntityService<AddServiceDTO> {
         this.domainAppRepository = domainAppRepository;
     }
 
-    public List<ServiceDTO> getDomainApps() {
+    public List<DomainAppDTO> getDomainApps() {
         return domainAppRepository.findAll()
                 .stream()
                 .map(DTOConverter::convertToDTO)
@@ -29,8 +26,7 @@ public class DomainAppService implements EntityService<AddServiceDTO> {
     }
 
     @Override
-    public void add(AddServiceDTO entity) {
-        Logger logger = Logger.getLogger(DomainAppService.class.getName());
-        logger.info("-----------------OK--------------------------");
+    public void add(AddServiceDTO addServiceDTO) {
+        domainAppRepository.save(DTOConverter.convertFromDTO(addServiceDTO));
     }
 }

@@ -1,8 +1,6 @@
 package edu.home.subscriptionservice.dto;
 
-import java.util.List;
-
-public class ServiceDTO {
+public class DomainAppDTO {
 
     private String serviceName;
 
