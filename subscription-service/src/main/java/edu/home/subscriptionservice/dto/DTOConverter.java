@@ -2,6 +2,7 @@ package edu.home.subscriptionservice.dto;
 
 import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import edu.home.subscriptionservice.data.event.Event;
+import edu.home.subscriptionservice.data.parameter.Parameter;
 
 public class DTOConverter {
 
@@ -27,5 +28,15 @@ public class DTOConverter {
         event.setCaption(addEventDTO.getEntityCaption());
 
         return event;
+    }
+
+    public static Parameter convertFromDTO(AddParameterDTO addParameterDTO) {
+        Parameter parameter = new Parameter();
+        parameter.setName(addParameterDTO.getEntityName());
+        parameter.setCaption(addParameterDTO.getEntityCaption());
+        parameter.setOptions(addParameterDTO.getParameterOptions());
+        parameter.setInputType(addParameterDTO.getParameterInputType());
+
+        return parameter;
     }
 }

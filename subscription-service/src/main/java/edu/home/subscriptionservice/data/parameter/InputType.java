@@ -1,4 +1,4 @@
-package edu.home.subscriptionservice.data;
+package edu.home.subscriptionservice.data.parameter;
 
 public enum InputType {
 
