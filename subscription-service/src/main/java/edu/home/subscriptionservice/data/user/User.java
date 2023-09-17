@@ -3,8 +3,10 @@ package edu.home.subscriptionservice.data.user;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "ns_user")
 public class User {
 
     @Id
