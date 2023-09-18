@@ -3,8 +3,17 @@ package edu.home.subscriptionservice.dto;
 import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.parameter.Parameter;
+import edu.home.subscriptionservice.data.subscription.EventSubscription;
 
 public class DTOConverter {
+
+    public static EventSubscriptionDTO convertToDTO(EventSubscription eventSubscription) {
+        EventSubscriptionDTO eventSubscriptionDTO = new EventSubscriptionDTO();
+        eventSubscriptionDTO.setEventName(eventSubscription.getEventName());
+        eventSubscriptionDTO.setEventChecked(eventSubscription.isChecked());
+
+        return eventSubscriptionDTO;
+    }
 
     public static DomainAppDTO convertToDTO(DomainApp domainApp) {
         DomainAppDTO domainAppDTO = new DomainAppDTO();

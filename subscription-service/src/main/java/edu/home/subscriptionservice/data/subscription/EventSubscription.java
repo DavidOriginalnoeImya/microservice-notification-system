@@ -14,15 +14,23 @@ public class EventSubscription {
     })
     private Id id = new Id();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", insertable = false, updatable = false)
     private Event event;
 
     private boolean checked;
+
+    public EventSubscription() {}
+
+    public EventSubscription(Event event, User user) {
+        this.id = new Id(user.getId(), event.getId());
+        this.user = user;
+        this.event = event;
+    }
 
     public boolean isChecked() {
         return checked;
@@ -30,5 +38,9 @@ public class EventSubscription {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public String getEventName() {
+        return event.getName();
     }
 }
