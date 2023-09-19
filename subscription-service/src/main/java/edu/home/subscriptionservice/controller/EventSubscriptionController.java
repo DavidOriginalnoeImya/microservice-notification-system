@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/api/event_subs") //??????????
+@RequestMapping("/api/event-subs")
 public class EventSubscriptionController {
 
     private EventSubscriptionService eventSubscriptionService;
