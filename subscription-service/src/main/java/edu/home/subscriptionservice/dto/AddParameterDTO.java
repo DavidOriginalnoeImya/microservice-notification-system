@@ -1,12 +1,12 @@
 package edu.home.subscriptionservice.dto;
 
-import edu.home.subscriptionservice.data.parameter.InputType;
+import edu.home.subscriptionservice.data.parameter.Parameter;
 
 import java.util.List;
 
 public class AddParameterDTO extends AddEntityDTO {
 
-    private InputType parameterInputType;
+    private Parameter.InputType parameterInputType;
 
     private List<String> parameterOptions;
 
@@ -14,11 +14,11 @@ public class AddParameterDTO extends AddEntityDTO {
 
     private String parameterServiceName;
 
-    public InputType getParameterInputType() {
+    public Parameter.InputType getParameterInputType() {
         return parameterInputType;
     }
 
-    public void setParameterInputType(InputType parameterInputType) {
+    public void setParameterInputType(Parameter.InputType parameterInputType) {
         this.parameterInputType = parameterInputType;
     }
 

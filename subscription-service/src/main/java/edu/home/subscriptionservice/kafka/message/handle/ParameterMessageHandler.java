@@ -1,7 +1,7 @@
 package edu.home.subscriptionservice.kafka.message.handle;
 
 import edu.home.rsmessage.AddParameterMessage;
-import edu.home.subscriptionservice.data.parameter.InputType;
+import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.dto.AddEntityDTO;
 import edu.home.subscriptionservice.dto.AddParameterDTO;
 
@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class ParameterMessageHandler implements MessageHandler<AddParameterMessage> {
 
-    private static final Map<AddParameterMessage.InputType, InputType> inputTypeMap = Map.of(
-            AddParameterMessage.InputType.INPUT, InputType.INPUT,
-            AddParameterMessage.InputType.MULTISELECT, InputType.MULTISELECT,
-            AddParameterMessage.InputType.SELECT, InputType.SELECT,
-            AddParameterMessage.InputType.CHECKBOX, InputType.CHECKBOX
+    private static final Map<AddParameterMessage.InputType, Parameter.InputType> inputTypeMap = Map.of(
+            AddParameterMessage.InputType.INPUT, Parameter.InputType.INPUT,
+            AddParameterMessage.InputType.MULTISELECT, Parameter.InputType.MULTISELECT,
+            AddParameterMessage.InputType.SELECT, Parameter.InputType.SELECT,
+            AddParameterMessage.InputType.CHECKBOX, Parameter.InputType.CHECKBOX
     );
 
     @Override

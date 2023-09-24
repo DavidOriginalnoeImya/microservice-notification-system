@@ -1,7 +1,6 @@
 package edu.home.subscriptionservice.data.parameter;
 
 import edu.home.subscriptionservice.data.event.Event;
-import edu.home.subscriptionservice.data.parameter.InputType;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -30,6 +29,17 @@ public class Parameter {
 
     @ManyToOne
     private Event event;
+
+    public enum InputType {
+
+        INPUT,
+
+        CHECKBOX,
+
+        SELECT,
+
+        MULTISELECT
+    }
 
     public Long getId() {
         return id;

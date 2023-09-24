@@ -8,6 +8,10 @@ import java.util.Objects;
 @Embeddable
 public class Id implements Serializable {
 
+    public static final String FIRST_ENTITY_ID = "firstEntityId";
+
+    public static final String SECOND_ENTITY_ID = "secondEntityId";
+
     private Long firstEntityId;
 
     private Long secondEntityId;

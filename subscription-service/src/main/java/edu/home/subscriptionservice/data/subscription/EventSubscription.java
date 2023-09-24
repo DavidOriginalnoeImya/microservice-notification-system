@@ -7,19 +7,23 @@ import jakarta.persistence.*;
 @Entity
 public class EventSubscription {
 
+    private static final String USER_ID_COLUMN = "user_id";
+
+    private static final String EVENT_ID_COLUMN = "event_id";
+
     @EmbeddedId
     @AttributeOverrides({
-        @AttributeOverride(name = "firstEntityId", column = @Column(name = "user_id")),
-        @AttributeOverride(name = "secondEntityId", column = @Column(name = "event_id"))
+        @AttributeOverride(name = Id.FIRST_ENTITY_ID, column = @Column(name = USER_ID_COLUMN)),
+        @AttributeOverride(name = Id.SECOND_ENTITY_ID, column = @Column(name = EVENT_ID_COLUMN))
     })
     private Id id = new Id();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = USER_ID_COLUMN, insertable = false, updatable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", insertable = false, updatable = false)
+    @JoinColumn(name = EVENT_ID_COLUMN, insertable = false, updatable = false)
     private Event event;
 
     private boolean checked;

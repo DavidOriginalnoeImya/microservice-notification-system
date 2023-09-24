@@ -4,6 +4,7 @@ import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.data.subscription.EventSubscription;
+import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscription;
 
 public class DTOConverter {
 
@@ -47,5 +48,11 @@ public class DTOConverter {
         parameter.setInputType(addParameterDTO.getParameterInputType());
 
         return parameter;
+    }
+
+    public static ParameterSubscriptionDTO convertToDTO(
+            ParameterSubscription parameterSubscription
+    ) {
+        return null;
     }
 }
