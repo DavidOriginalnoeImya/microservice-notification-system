@@ -13,14 +13,14 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("MSPS")
-class MultiStringParameterSubscription extends ParameterSubscription {
+public class MultiStringParameterSubscription extends ParameterSubscription {
 
     @ElementCollection
     private List<String> valueList = new ArrayList<>();
 
     protected MultiStringParameterSubscription() {}
 
-    protected MultiStringParameterSubscription(
+    public MultiStringParameterSubscription(
             User user, Parameter parameter, List<String> values
     ) {
         super(user, parameter);

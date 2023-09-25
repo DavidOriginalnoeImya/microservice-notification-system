@@ -21,6 +21,5 @@ public class ApplicationEventListener {
 
     @EventListener
     public void handleContextRefreshEvent(ContextRefreshedEvent contextRefreshedEvent) {
-
     }
 }

@@ -1,7 +1,11 @@
 package edu.home.subscriptionservice.data.event;
 
 import edu.home.subscriptionservice.data.domainapp.DomainApp;
+import edu.home.subscriptionservice.data.parameter.Parameter;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Event {
@@ -18,6 +22,9 @@ public class Event {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private DomainApp domainApp;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
+    private Set<Parameter> parameters = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -53,5 +60,13 @@ public class Event {
 
     public void setDefaultChecked(boolean defaultChecked) {
         this.defaultChecked = defaultChecked;
+    }
+
+    public Set<Parameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Set<Parameter> parameters) {
+        this.parameters = parameters;
     }
 }

@@ -10,4 +10,6 @@ public interface EventSubscriptionRepository extends JpaRepository<EventSubscrip
 
     // check what sql is generated for
     Optional<EventSubscription> getByEventAndUserGuid(Event event, String userGuid);
+
+
 }

@@ -36,7 +36,7 @@ public class ParameterSubscription {
 
     protected ParameterSubscription() {}
 
-    protected ParameterSubscription(User user, Parameter parameter) {
+    public ParameterSubscription(User user, Parameter parameter) {
         this.id = new Id(user.getId(), parameter.getId());
         this.user = user;
         this.parameter = parameter;

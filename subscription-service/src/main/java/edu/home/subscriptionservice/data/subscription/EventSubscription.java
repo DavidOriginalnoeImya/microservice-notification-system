@@ -28,7 +28,7 @@ public class EventSubscription {
 
     private boolean checked;
 
-    public EventSubscription() {}
+    protected EventSubscription() {}
 
     public EventSubscription(Event event, User user) {
         this.id = new Id(user.getId(), event.getId());
