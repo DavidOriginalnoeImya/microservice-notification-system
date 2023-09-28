@@ -7,11 +7,12 @@ import edu.home.subscriptionservice.dto.AddMultiStringParamSubscriptionDTO;
 import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import jakarta.persistence.*;
+import org.springframework.data.domain.Persistable;
 
 @Entity
 @Inheritance
-@DiscriminatorValue("PS")
-public class ParameterSubscription {
+//@DiscriminatorValue("PS")
+public abstract class ParameterSubscription implements Persistable<Id> {
 
     private static final String USER_ID_COLUMN = "user_id";
 
@@ -44,21 +45,19 @@ public class ParameterSubscription {
 
     public static ParameterSubscription getParameterSubscription(
         User user, Parameter parameter,
-        AddParameterSubscriptionDTO<?> addParameterSubscriptionDTO
+        AddParameterSubscriptionDTO addParameterSubscriptionDTO
     ) {
         if (addParameterSubscriptionDTO
-                instanceof AddMultiStringParamSubscriptionDTO multiStringValueDTO) {
+                instanceof AddMultiStringParamSubscriptionDTO multiStringDTO) {
             return new MultiStringParameterSubscription(
-                    user, parameter, multiStringValueDTO.getValue()
+                    user, parameter, multiStringDTO.getValues()
             );
         }
 
         throw new IllegalArgumentException();
     }
 
-    public ParameterSubscriptionDTO toDTO() {
-        return null;
-    }
+    public abstract ParameterSubscriptionDTO toDTO();
 
     public String getParameterName() {
         return parameter.getName();
@@ -70,5 +69,23 @@ public class ParameterSubscription {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public Parameter getParameter() {
+        return parameter;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    @Override
+    public Id getId() {
+        return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return !user.hasSubscription(parameter);
     }
 }

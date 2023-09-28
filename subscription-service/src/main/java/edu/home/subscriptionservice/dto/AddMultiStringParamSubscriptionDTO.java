@@ -3,18 +3,15 @@ package edu.home.subscriptionservice.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddMultiStringParamSubscriptionDTO
-        extends AddParameterSubscriptionDTO<List<String>> {
+public class AddMultiStringParamSubscriptionDTO extends AddParameterSubscriptionDTO {
 
     private List<String> values = new ArrayList<>();
 
-    @Override
-    public List<String> getValue() {
+    public List<String> getValues() {
         return values;
     }
 
-    @Override
-    public AddParameterSubscriptionDTO<List<String>> setValue(List<String> value) {
+    public AddParameterSubscriptionDTO setValue(List<String> value) {
         values = value;
         return this;
     }

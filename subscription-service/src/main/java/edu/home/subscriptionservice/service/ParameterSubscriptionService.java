@@ -4,31 +4,23 @@ import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.event.EventRepository;
 import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.data.parameter.ParameterRepository;
-import edu.home.subscriptionservice.data.subscription.parameter.MultiStringParameterSubscriptionRepository;
-import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscription;
 import edu.home.subscriptionservice.data.subscription.parameter.IParameterSubscriptionRepository;
+import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscription;
 import edu.home.subscriptionservice.data.user.User;
 import edu.home.subscriptionservice.data.user.UserRepository;
-import edu.home.subscriptionservice.dto.*;
+import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
+import edu.home.subscriptionservice.dto.DTOConverter;
+import edu.home.subscriptionservice.dto.GetParameterSubscriptionDTO;
+import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
-import static edu.home.subscriptionservice.data.parameter.Parameter.InputType.MULTISELECT;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ParameterSubscriptionService {
-
-    private final Map<
-            Parameter.InputType,
-            Class<? extends IParameterSubscriptionRepository<?>>>
-    repositoryMap = Map.of(
-            MULTISELECT, MultiStringParameterSubscriptionRepository.class
-    );
-
-    private final ApplicationContext applicationContext;
 
     private final ParameterRepository parameterRepository;
 
@@ -36,16 +28,18 @@ public class ParameterSubscriptionService {
 
     private final UserRepository userRepository;
 
+    private final IParameterSubscriptionRepository<ParameterSubscription> parameterSubscriptionRepository;
+
     public ParameterSubscriptionService(
-            ApplicationContext applicationContext,
             ParameterRepository parameterRepository,
             EventRepository eventRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            IParameterSubscriptionRepository<ParameterSubscription> parameterSubscriptionRepository
     ) {
-        this.applicationContext = applicationContext;
         this.parameterRepository = parameterRepository;
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
+        this.parameterSubscriptionRepository = parameterSubscriptionRepository;
     }
 
     public ParameterSubscriptionDTO getParameterSubscription(
@@ -59,32 +53,44 @@ public class ParameterSubscriptionService {
                 getParameterSubscriptionDTO.getDomainAppName()
         );
 
-        return applicationContext
-                .getBean(repositoryMap.get(parameter.getInputType()))
+        return parameterSubscriptionRepository
                 .getByUserAndParameter(user, parameter)
                 .map(ParameterSubscription::toDTO)
                 .orElseThrow();
     }
 
-//    @Transactional
-//    public ParameterSubscriptionDTO addParameterSubscription(
-//            AddParameterSubscriptionDTO<?> addParameterSubscriptionDTO) {
-//        User user = getUser(addParameterSubscriptionDTO.getUserGuid());
-//
-//        Parameter parameter = getParameter(
-//                addParameterSubscriptionDTO.getParameterName(),
-//                addParameterSubscriptionDTO.getEventName(),
-//                addParameterSubscriptionDTO.getDomainAppName()
-//        );
-//
-//        ParameterSubscription parameterSubscription = ParameterSubscription
-//                .getParameterSubscription(user, parameter, addParameterSubscriptionDTO);
-//
-//        return applicationContext
-//                .getBean(repositoryMap.get(parameter.getInputType()))
-//                .save(parameterSubscription)
-//
-//    }
+    @Transactional
+    public List<ParameterSubscriptionDTO> getParameterSubscriptions(
+            String userGuid, String eventName, String domainAppName
+    ) {
+        User user = getUser(userGuid);
+
+        Event event = getEvent(eventName, domainAppName);
+
+        return parameterSubscriptionRepository
+                .getByUserAndEvent(user, event)
+                .stream().map(ParameterSubscription::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public ParameterSubscriptionDTO addParameterSubscription(
+            AddParameterSubscriptionDTO addParameterSubscriptionDTO
+    ) {
+        User user = getUser(addParameterSubscriptionDTO.getUserGuid());
+
+        Parameter parameter = getParameter(
+                addParameterSubscriptionDTO.getParameterName(),
+                addParameterSubscriptionDTO.getEventName(),
+                addParameterSubscriptionDTO.getDomainAppName()
+        );
+
+        ParameterSubscription ps = ParameterSubscription
+                .getParameterSubscription(user, parameter, addParameterSubscriptionDTO);
+
+        return DTOConverter
+                .convertToDTO(parameterSubscriptionRepository.save(ps));
+    }
 
     private User getUser(String userGuid) {
         return userRepository

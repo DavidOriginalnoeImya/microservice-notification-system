@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
         @JsonSubTypes.Type(AddMultiStringParamSubscriptionDTO.class)
 })
-public abstract class AddParameterSubscriptionDTO<ValueType> {
+public abstract class AddParameterSubscriptionDTO {
 
     @JsonIgnore
     private String userGuid;
@@ -23,7 +23,7 @@ public abstract class AddParameterSubscriptionDTO<ValueType> {
         return userGuid;
     }
 
-    public AddParameterSubscriptionDTO<ValueType> setUserGuid(String userGuid) {
+    public AddParameterSubscriptionDTO setUserGuid(String userGuid) {
         this.userGuid = userGuid;
         return this;
     }
@@ -32,7 +32,7 @@ public abstract class AddParameterSubscriptionDTO<ValueType> {
         return parameterName;
     }
 
-    public AddParameterSubscriptionDTO<ValueType> setParameterName(String parameterName) {
+    public AddParameterSubscriptionDTO setParameterName(String parameterName) {
         this.parameterName = parameterName;
         return this;
     }
@@ -41,7 +41,7 @@ public abstract class AddParameterSubscriptionDTO<ValueType> {
         return eventName;
     }
 
-    public AddParameterSubscriptionDTO<ValueType> setEventName(String eventName) {
+    public AddParameterSubscriptionDTO setEventName(String eventName) {
         this.eventName = eventName;
         return this;
     }
@@ -50,13 +50,9 @@ public abstract class AddParameterSubscriptionDTO<ValueType> {
         return domainAppName;
     }
 
-    public AddParameterSubscriptionDTO<ValueType> setDomainNameApp(String domainAppName) {
+    public AddParameterSubscriptionDTO setDomainNameApp(String domainAppName) {
         this.domainAppName = domainAppName;
         return this;
     }
-
-    public abstract ValueType getValue();
-
-    public abstract AddParameterSubscriptionDTO<ValueType> setValue(ValueType value);
 
 }

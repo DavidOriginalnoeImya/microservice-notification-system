@@ -2,11 +2,8 @@ package edu.home.subscriptionservice.service;
 
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.event.EventRepository;
-import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.data.subscription.EventSubscription;
 import edu.home.subscriptionservice.data.subscription.EventSubscriptionRepository;
-import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscription;
-import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscriptionRepository;
 import edu.home.subscriptionservice.data.user.User;
 import edu.home.subscriptionservice.data.user.UserRepository;
 import edu.home.subscriptionservice.dto.AddEventSubscriptionDTO;
@@ -20,20 +17,16 @@ public class EventSubscriptionService {
 
     private final EventSubscriptionRepository eventSubscriptionRepository;
 
-    ParameterSubscriptionRepository parameterSubscriptionRepository;
-
     private final EventRepository eventRepository;
 
     private final UserRepository userRepository;
 
     public EventSubscriptionService(
             EventSubscriptionRepository eventSubscriptionRepository,
-            ParameterSubscriptionRepository parameterSubscriptionRepository,
             EventRepository eventRepository,
             UserRepository userRepository
     ) {
         this.eventSubscriptionRepository = eventSubscriptionRepository;
-        this.parameterSubscriptionRepository = parameterSubscriptionRepository;
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
     }
@@ -68,13 +61,6 @@ public class EventSubscriptionService {
         );
 
         EventSubscription eventSubscription = new EventSubscription(event, user);
-
-        for (Parameter parameter: event.getParameters()) {
-            System.out.println(":::::::" + parameter.getClass());
-            ParameterSubscription parameterSubscription =
-                    new ParameterSubscription(user, parameter);
-            parameterSubscriptionRepository.save(parameterSubscription);
-        }
 
         return DTOConverter.convertToDTO(
                 eventSubscriptionRepository.save(eventSubscription)

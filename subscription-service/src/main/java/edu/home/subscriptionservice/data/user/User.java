@@ -1,9 +1,11 @@
 package edu.home.subscriptionservice.data.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import edu.home.subscriptionservice.data.parameter.Parameter;
+import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscription;
+import jakarta.persistence.*;
+
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ns_user")
@@ -14,6 +16,9 @@ public class User {
     private Long id;
 
     private String guid;
+
+    @OneToMany(mappedBy = "user")
+    private List<ParameterSubscription> parameterSubscriptions;
 
     public Long getId() {
         return id;
@@ -31,4 +36,9 @@ public class User {
         this.guid = guid;
     }
 
+    public boolean hasSubscription(Parameter parameter) {
+        return parameterSubscriptions.stream()
+                .anyMatch((ps) -> Objects.equals(ps.getParameter(), parameter) &&
+                        Objects.equals(ps.getUser(), this));
+    }
 }
