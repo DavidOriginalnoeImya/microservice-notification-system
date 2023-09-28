@@ -9,10 +9,22 @@ import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import jakarta.persistence.*;
 import org.springframework.data.domain.Persistable;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
+import static edu.home.subscriptionservice.data.parameter.Parameter.InputType.MULTISELECT;
+
 @Entity
 @Inheritance
 //@DiscriminatorValue("PS")
 public abstract class ParameterSubscription implements Persistable<Id> {
+
+    private static final Map<Parameter.InputType,
+            BiFunction<User, Parameter, ? extends ParameterSubscription>> psFactory = Map.of(
+        MULTISELECT, (u, p) -> new MultiStringParameterSubscription(u, p, List.of())
+    );
 
     private static final String USER_ID_COLUMN = "user_id";
 
@@ -37,7 +49,7 @@ public abstract class ParameterSubscription implements Persistable<Id> {
 
     protected ParameterSubscription() {}
 
-    public ParameterSubscription(User user, Parameter parameter) {
+    protected ParameterSubscription(User user, Parameter parameter) {
         this.id = new Id(user.getId(), parameter.getId());
         this.user = user;
         this.parameter = parameter;
@@ -55,6 +67,12 @@ public abstract class ParameterSubscription implements Persistable<Id> {
         }
 
         throw new IllegalArgumentException();
+    }
+
+    public static ParameterSubscription getParameterSubscription(User user, Parameter parameter) {
+        return psFactory
+                .get(parameter.getInputType())
+                .apply(user, parameter);
     }
 
     public abstract ParameterSubscriptionDTO toDTO();

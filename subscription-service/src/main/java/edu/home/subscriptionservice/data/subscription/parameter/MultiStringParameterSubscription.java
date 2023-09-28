@@ -20,7 +20,7 @@ public class MultiStringParameterSubscription extends ParameterSubscription {
 
     protected MultiStringParameterSubscription() {}
 
-    public MultiStringParameterSubscription(
+    protected MultiStringParameterSubscription(
             User user, Parameter parameter, List<String> values
     ) {
         super(user, parameter);
