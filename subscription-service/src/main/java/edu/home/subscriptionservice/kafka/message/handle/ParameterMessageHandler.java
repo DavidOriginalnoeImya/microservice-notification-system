@@ -9,13 +9,6 @@ import java.util.Map;
 
 public class ParameterMessageHandler implements MessageHandler<AddParameterMessage> {
 
-    private static final Map<AddParameterMessage.InputType, Parameter.InputType> inputTypeMap = Map.of(
-            AddParameterMessage.InputType.INPUT, Parameter.InputType.INPUT,
-            AddParameterMessage.InputType.MULTISELECT, Parameter.InputType.MULTISELECT,
-            AddParameterMessage.InputType.SELECT, Parameter.InputType.SELECT,
-            AddParameterMessage.InputType.CHECKBOX, Parameter.InputType.CHECKBOX
-    );
-
     @Override
     public AddEntityDTO convertAddMessage(AddParameterMessage addParameterMessage) {
         AddParameterDTO addParameterDTO = new AddParameterDTO();
@@ -23,7 +16,9 @@ public class ParameterMessageHandler implements MessageHandler<AddParameterMessa
         addParameterDTO.setEntityCaption(addParameterMessage.getCaption());
         addParameterDTO.setParameterOptions(addParameterMessage.getOptions());
         addParameterDTO.setParameterInputType(
-                inputTypeMap.get(addParameterMessage.getInputType())
+                Parameter.InputType.valueOf(
+                        addParameterMessage.getInputType().name()
+                )
         );
         addParameterDTO.setParameterEventName(addParameterMessage.getEventName());
         addParameterDTO.setParameterServiceName(addParameterMessage.getServiceName());
