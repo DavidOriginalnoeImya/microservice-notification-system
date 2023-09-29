@@ -16,7 +16,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,6 +92,27 @@ public class ParameterSubscriptionService {
 
         return DTOConverter
                 .convertToDTO(parameterSubscriptionRepository.save(ps));
+    }
+
+    List<ParameterSubscriptionDTO> addParameterSubscriptions(
+            User user, Set<Parameter> parameters
+    ) {
+        List<ParameterSubscriptionDTO> parameterSubscriptionsDTO = new LinkedList<>();
+
+        for (Parameter parameter: parameters) {
+            ParameterSubscription parameterSubscription = ParameterSubscription
+                    .getParameterSubscription(user, parameter);
+
+            if (!parameterSubscriptionRepository.existsById(parameterSubscription.getId())) {
+                parameterSubscriptionsDTO.add(
+                        DTOConverter.convertToDTO(
+                                parameterSubscriptionRepository.save(parameterSubscription)
+                        )
+                );
+            }
+        }
+
+        return parameterSubscriptionsDTO;
     }
 
     private User getUser(String userGuid) {

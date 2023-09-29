@@ -2,20 +2,31 @@ package edu.home.subscriptionservice.service;
 
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.event.EventRepository;
+import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.data.subscription.EventSubscription;
 import edu.home.subscriptionservice.data.subscription.EventSubscriptionRepository;
+import edu.home.subscriptionservice.data.subscription.parameter.IParameterSubscriptionRepository;
+import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscription;
 import edu.home.subscriptionservice.data.user.User;
 import edu.home.subscriptionservice.data.user.UserRepository;
 import edu.home.subscriptionservice.dto.AddEventSubscriptionDTO;
 import edu.home.subscriptionservice.dto.DTOConverter;
 import edu.home.subscriptionservice.dto.EventSubscriptionDTO;
+import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class EventSubscriptionService {
 
     private final EventSubscriptionRepository eventSubscriptionRepository;
+
+    private final ParameterSubscriptionService parameterSubscriptionService;
 
     private final EventRepository eventRepository;
 
@@ -23,10 +34,12 @@ public class EventSubscriptionService {
 
     public EventSubscriptionService(
             EventSubscriptionRepository eventSubscriptionRepository,
+            ParameterSubscriptionService parameterSubscriptionService ,
             EventRepository eventRepository,
             UserRepository userRepository
     ) {
         this.eventSubscriptionRepository = eventSubscriptionRepository;
+        this.parameterSubscriptionService = parameterSubscriptionService;
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
     }
@@ -51,9 +64,7 @@ public class EventSubscriptionService {
     public EventSubscriptionDTO addEventSubscription(
             AddEventSubscriptionDTO addEventSubscriptionDTO
     ) {
-        User user = userRepository
-                .getByGuid(addEventSubscriptionDTO.getUserGuid())
-                .orElseThrow();
+        User user = getUser(addEventSubscriptionDTO.getUserGuid());
 
         Event event = getEvent(
                 addEventSubscriptionDTO.getEventName(),
@@ -61,6 +72,9 @@ public class EventSubscriptionService {
         );
 
         EventSubscription eventSubscription = new EventSubscription(event, user);
+
+        List<ParameterSubscriptionDTO> parameterSubscriptionsDTO = parameterSubscriptionService
+                        .addParameterSubscriptions(user, event.getParameters());
 
         return DTOConverter.convertToDTO(
                 eventSubscriptionRepository.save(eventSubscription)
@@ -84,6 +98,12 @@ public class EventSubscriptionService {
     private Event getEvent(String eventName, String domainAppName) {
         return eventRepository
                 .getByNameAndDomainAppName(eventName, domainAppName)
+                .orElseThrow();
+    }
+
+    private User getUser(String userGuid) {
+        return userRepository
+                .getByGuid(userGuid)
                 .orElseThrow();
     }
 }
