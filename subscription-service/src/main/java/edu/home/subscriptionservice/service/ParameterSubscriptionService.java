@@ -100,10 +100,10 @@ public class ParameterSubscriptionService {
         List<ParameterSubscriptionDTO> parameterSubscriptionsDTO = new LinkedList<>();
 
         for (Parameter parameter: parameters) {
-            ParameterSubscription parameterSubscription = ParameterSubscription
-                    .getParameterSubscription(user, parameter);
+            if (!parameterSubscriptionRepository.existsByUserAndParameter(user, parameter)) {
+                ParameterSubscription parameterSubscription = ParameterSubscription
+                        .getParameterSubscription(user, parameter);
 
-            if (!parameterSubscriptionRepository.existsById(parameterSubscription.getId())) {
                 parameterSubscriptionsDTO.add(
                         DTOConverter.convertToDTO(
                                 parameterSubscriptionRepository.save(parameterSubscription)

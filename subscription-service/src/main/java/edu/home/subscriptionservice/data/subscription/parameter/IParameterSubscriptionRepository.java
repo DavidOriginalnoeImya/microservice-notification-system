@@ -20,4 +20,6 @@ public interface IParameterSubscriptionRepository<T extends ParameterSubscriptio
 
     @Query("select ps from #{#entityName} ps where ps.user = ?1 and ps.parameter.event = ?2")
     List<T> getByUserAndEvent(User user, Event event);
+
+    boolean existsByUserAndParameter(User user, Parameter parameter);
 }

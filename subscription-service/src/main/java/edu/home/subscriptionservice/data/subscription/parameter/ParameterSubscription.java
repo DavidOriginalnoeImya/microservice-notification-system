@@ -7,19 +7,17 @@ import edu.home.subscriptionservice.dto.AddMultiStringParamSubscriptionDTO;
 import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import jakarta.persistence.*;
-import org.springframework.data.domain.Persistable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 import static edu.home.subscriptionservice.data.parameter.Parameter.InputType.MULTISELECT;
 
 @Entity
 @Inheritance
 //@DiscriminatorValue("PS")
-public abstract class ParameterSubscription implements Persistable<Id> {
+public abstract class ParameterSubscription {
 
     private static final Map<Parameter.InputType,
             BiFunction<User, Parameter, ? extends ParameterSubscription>> psFactory = Map.of(
@@ -95,15 +93,5 @@ public abstract class ParameterSubscription implements Persistable<Id> {
 
     public User getUser() {
         return user;
-    }
-
-    @Override
-    public Id getId() {
-        return id;
-    }
-
-    @Override
-    public boolean isNew() {
-        return !user.hasSubscription(parameter);
     }
 }
