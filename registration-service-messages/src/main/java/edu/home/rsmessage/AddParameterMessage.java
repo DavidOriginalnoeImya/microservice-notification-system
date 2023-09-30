@@ -3,8 +3,6 @@ package edu.home.rsmessage;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import java.util.List;
-
 @JsonDeserialize(builder = AddParameterMessage.Builder.class)
 public class AddParameterMessage extends AddEntityMessage {
 
@@ -30,19 +28,12 @@ public class AddParameterMessage extends AddEntityMessage {
 
         private InputType inputType;
 
-        private List<String> options;
-
         private String eventName;
 
         private String serviceName;
 
         public Builder setInputType(InputType inputType) {
             this.inputType = inputType;
-            return self();
-        }
-
-        public Builder setOptions(List<String> options) {
-            this.options = options;
             return self();
         }
 
