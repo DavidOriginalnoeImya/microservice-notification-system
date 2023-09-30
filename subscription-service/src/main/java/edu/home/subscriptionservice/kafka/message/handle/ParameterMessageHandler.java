@@ -5,8 +5,6 @@ import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.dto.AddEntityDTO;
 import edu.home.subscriptionservice.dto.AddParameterDTO;
 
-import java.util.Map;
-
 public class ParameterMessageHandler implements MessageHandler<AddParameterMessage> {
 
     @Override
@@ -14,7 +12,6 @@ public class ParameterMessageHandler implements MessageHandler<AddParameterMessa
         AddParameterDTO addParameterDTO = new AddParameterDTO();
         addParameterDTO.setEntityName(addParameterMessage.getName());
         addParameterDTO.setEntityCaption(addParameterMessage.getCaption());
-        addParameterDTO.setParameterOptions(addParameterMessage.getOptions());
         addParameterDTO.setParameterInputType(
                 Parameter.InputType.valueOf(
                         addParameterMessage.getInputType().name()

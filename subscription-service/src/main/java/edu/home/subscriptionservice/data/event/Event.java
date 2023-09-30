@@ -18,8 +18,6 @@ public class Event {
 
     private String caption;
 
-    private boolean defaultChecked;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private DomainApp domainApp;
 
@@ -52,14 +50,6 @@ public class Event {
 
     public void setService(DomainApp domainApp) {
         this.domainApp = domainApp;
-    }
-
-    public boolean isDefaultChecked() {
-        return defaultChecked;
-    }
-
-    public void setDefaultChecked(boolean defaultChecked) {
-        this.defaultChecked = defaultChecked;
     }
 
     public Set<Parameter> getParameters() {

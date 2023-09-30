@@ -1,10 +1,10 @@
 package edu.home.subscriptionservice.data.parameter;
 
 import edu.home.subscriptionservice.data.event.Event;
-import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Parameter {
@@ -18,14 +18,6 @@ public class Parameter {
     private String caption;
 
     private InputType inputType;
-
-    private boolean defaultChecked;
-
-    @ElementCollection
-    private List<String> options = new ArrayList<>();
-
-    @ElementCollection
-    private List<String> defaultValues = new ArrayList<>();
 
     @ManyToOne
     private Event event;
@@ -67,30 +59,6 @@ public class Parameter {
 
     public void setInputType(InputType inputType) {
         this.inputType = inputType;
-    }
-
-    public boolean isDefaultChecked() {
-        return defaultChecked;
-    }
-
-    public void setDefaultChecked(boolean defaultChecked) {
-        this.defaultChecked = defaultChecked;
-    }
-
-    public List<String> getOptions() {
-        return options;
-    }
-
-    public void setOptions(List<String> options) {
-        this.options = options;
-    }
-
-    public List<String> getDefaultValues() {
-        return defaultValues;
-    }
-
-    public void setDefaultValues(List<String> defaultValues) {
-        this.defaultValues = defaultValues;
     }
 
     public Event getEvent() {

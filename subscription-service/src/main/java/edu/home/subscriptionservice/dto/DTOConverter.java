@@ -44,7 +44,6 @@ public class DTOConverter {
         Parameter parameter = new Parameter();
         parameter.setName(addParameterDTO.getEntityName());
         parameter.setCaption(addParameterDTO.getEntityCaption());
-        parameter.setOptions(addParameterDTO.getParameterOptions());
         parameter.setInputType(addParameterDTO.getParameterInputType());
 
         return parameter;
