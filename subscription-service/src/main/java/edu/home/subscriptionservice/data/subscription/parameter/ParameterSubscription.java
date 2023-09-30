@@ -1,5 +1,7 @@
 package edu.home.subscriptionservice.data.subscription.parameter;
 
+import edu.home.subscriptionservice.data.domainapp.DomainApp;
+import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.data.subscription.Id;
 import edu.home.subscriptionservice.data.user.User;
@@ -93,5 +95,17 @@ public abstract class ParameterSubscription {
 
     public User getUser() {
         return user;
+    }
+
+    public String getEventName() {
+        return getEvent().getName();
+    }
+
+    public String getDomainAppName() {
+        return getEvent().getServiceName();
+    }
+
+    private Event getEvent() {
+        return getParameter().getEvent();
     }
 }

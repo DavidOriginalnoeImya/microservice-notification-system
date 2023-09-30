@@ -52,6 +52,11 @@ public class DTOConverter {
     public static ParameterSubscriptionDTO convertToDTO(
             ParameterSubscription parameterSubscription
     ) {
-        return null;
+        ParameterSubscriptionDTO parameterSubscriptionDTO = new ParameterSubscriptionDTO();
+        parameterSubscriptionDTO.setParameterName(parameterSubscription.getParameterName());
+        parameterSubscriptionDTO.setEventName(parameterSubscription.getEventName());
+        parameterSubscriptionDTO.setServiceName(parameterSubscription.getDomainAppName());
+
+        return parameterSubscriptionDTO;
     }
 }

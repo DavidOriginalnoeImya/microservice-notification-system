@@ -18,6 +18,12 @@ public class UriBuilder {
                 .pathSegment(httpRequest.getRequestURI().split("/"));
     }
 
+    public UriBuilder setPathSegment(String segment) {
+        uriComponentsBuilder
+                .pathSegment(segment);
+        return this;
+    }
+
     public UriBuilder setPathVariable(String name, String value) {
         uriComponentsBuilder
                 .queryParam(name, value);
