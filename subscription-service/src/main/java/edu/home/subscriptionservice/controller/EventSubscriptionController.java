@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -31,9 +32,9 @@ public class EventSubscriptionController {
         this.eventSubscriptionService = eventSubscriptionService;
     }
 
-    @GetMapping
+    @GetMapping("{event-name}")
     public ResponseEntity<?> getEventSubscription(
-            @RequestParam(EVENT_NAME_REQ_PARAM) String eventName,
+            @PathVariable(EVENT_NAME_REQ_PARAM) String eventName,
             @RequestParam(SERVICE_NAME_REQ_PARAM) String domainAppName
     ) {
         try {
@@ -45,6 +46,17 @@ public class EventSubscriptionController {
                     .status(EVENT_SUB_DOESNT_EXIST)
                     .body("Current user isn't subscribe to this event");
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<EventSubscriptionDTO>> getEventSubscriptions(
+            @RequestParam(SERVICE_NAME_REQ_PARAM) String domainAppName
+    ) {
+        List<EventSubscriptionDTO> eventSubscriptionsDTO = eventSubscriptionService
+                .getEventSubscriptions(userGuid, domainAppName);
+
+        return ResponseEntity
+                .ok(eventSubscriptionsDTO);
     }
 
     @PostMapping(consumes = "application/json")

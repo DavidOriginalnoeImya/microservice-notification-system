@@ -1,6 +1,7 @@
 package edu.home.subscriptionservice.service;
 
 import edu.home.notificationsystem.exception.EntityDoesntExistException;
+import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.event.EventRepository;
 import edu.home.subscriptionservice.data.subscription.EventSubscription;
@@ -15,6 +16,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventSubscriptionService {
@@ -79,6 +81,14 @@ public class EventSubscriptionService {
         eventSubscriptionRepository.delete(eventSubscription);
 
         return DTOConverter.convertToDTO(eventSubscription);
+    }
+
+    @Transactional
+    public List<EventSubscriptionDTO> getEventSubscriptions(String userGuid, String domainAppName) {
+        return eventSubscriptionRepository
+                .getByUserGuidAndDomainAppName(userGuid, domainAppName)
+                .stream().map(DTOConverter::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     private EventSubscription getEventSubscription(String userGuid, Event event) {
