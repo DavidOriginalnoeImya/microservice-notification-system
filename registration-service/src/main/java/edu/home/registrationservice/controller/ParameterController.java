@@ -1,6 +1,5 @@
 package edu.home.registrationservice.controller;
 
-import edu.home.registrationservice.converter.ParameterInputTypeConverter;
 import edu.home.registrationservice.dto.ErrorDTO;
 import edu.home.registrationservice.dto.ParameterDTO;
 import edu.home.registrationservice.dto.parameter.AddParameterDTO;
@@ -10,6 +9,7 @@ import edu.home.registrationservice.kafka.KafkaProducer;
 import edu.home.registrationservice.service.ParameterService;
 import edu.home.rsmessage.AddEntityMessage;
 import edu.home.rsmessage.AddParameterMessage;
+import edu.home.rsmessage.AddParameterMessage.InputType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -76,8 +76,7 @@ public class ParameterController {
         return new AddParameterMessage.Builder()
                 .setName(addParameterDTO.getParameterName())
                 .setCaption(addParameterDTO.getParameterCaption())
-                .setOptions(addParameterDTO.getOptions())
-                .setInputType(ParameterInputTypeConverter.convert(addParameterDTO.getInputType()))
+                .setInputType(InputType.valueOf(addParameterDTO.getInputType().name()))
                 .setEventName(addParameterDTO.getParameterEvent())
                 .setServiceName(addParameterDTO.getParameterDomainService())
                 .build();
