@@ -19,6 +19,8 @@ public class EventSubscriptionController {
 
     private final String userGuid = "1234";
 
+    private final static int EVENT_SUB_DOESNT_EXIST = 224;
+
     private static final String EVENT_NAME_REQ_PARAM = "event-name";
 
     private static final String SERVICE_NAME_REQ_PARAM = "service-name";
@@ -40,8 +42,8 @@ public class EventSubscriptionController {
         }
         catch (EntityDoesntExistException e) {
             return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
+                    .status(EVENT_SUB_DOESNT_EXIST)
+                    .body("Current user isn't subscribe to this event");
         }
     }
 

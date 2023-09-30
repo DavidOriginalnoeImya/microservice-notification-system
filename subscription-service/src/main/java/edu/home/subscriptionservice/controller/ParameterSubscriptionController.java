@@ -1,5 +1,6 @@
 package edu.home.subscriptionservice.controller;
 
+import edu.home.notificationsystem.exception.EntityDoesntExistException;
 import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.GetParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
@@ -13,6 +14,8 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api/parameter-subs")
 public class ParameterSubscriptionController {
+
+    private final static int PARAM_SUB_DOESNT_EXIST = 225;
 
     private final ParameterSubscriptionService parameterSubscriptionService;
 
@@ -29,11 +32,18 @@ public class ParameterSubscriptionController {
             @RequestParam("event-name") String eventName,
             @RequestParam("service-name") String domainAppName
     ) {
-        List<ParameterSubscriptionDTO> parameterSubscriptionsDTO = parameterSubscriptionService
-                .getParameterSubscriptions(userGuid, eventName, domainAppName);
+        try {
+            List<ParameterSubscriptionDTO> parameterSubscriptionsDTO = parameterSubscriptionService
+                    .getParameterSubscriptions(userGuid, eventName, domainAppName);
 
-        return ResponseEntity
-                .ok(parameterSubscriptionsDTO);
+            return ResponseEntity
+                    .ok(parameterSubscriptionsDTO);
+        }
+        catch (EntityDoesntExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
 
     @GetMapping("/{parameter-name}")
@@ -55,10 +65,10 @@ public class ParameterSubscriptionController {
             return ResponseEntity
                     .ok(parameterSubscriptionDTO);
         }
-        catch (NoSuchElementException e) {
+        catch (EntityDoesntExistException e) {
             return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
+                    .status(PARAM_SUB_DOESNT_EXIST)
+                    .body("Current user isn't subscribe to this parameter");
         }
     }
 
@@ -66,12 +76,19 @@ public class ParameterSubscriptionController {
     public ResponseEntity<?> addParameterSubscription(
             @RequestBody AddParameterSubscriptionDTO addParameterSubscriptionDTO
     ) {
-        ParameterSubscriptionDTO parameterSubscriptionDTO = parameterSubscriptionService
-                .addParameterSubscription(
-                        addParameterSubscriptionDTO.setUserGuid(userGuid)
-                );
+        try {
+            ParameterSubscriptionDTO parameterSubscriptionDTO = parameterSubscriptionService
+                    .addParameterSubscription(
+                            addParameterSubscriptionDTO.setUserGuid(userGuid)
+                    );
 
-        return ResponseEntity
-                .ok(parameterSubscriptionDTO);
+            return ResponseEntity
+                    .ok(parameterSubscriptionDTO);
+        }
+        catch (EntityDoesntExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
 }

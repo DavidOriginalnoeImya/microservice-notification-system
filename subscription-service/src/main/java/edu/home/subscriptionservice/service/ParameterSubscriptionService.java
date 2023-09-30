@@ -1,5 +1,6 @@
 package edu.home.subscriptionservice.service;
 
+import edu.home.notificationsystem.exception.EntityDoesntExistException;
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.event.EventRepository;
 import edu.home.subscriptionservice.data.parameter.Parameter;
@@ -58,7 +59,7 @@ public class ParameterSubscriptionService {
         return parameterSubscriptionRepository
                 .getByUserAndParameter(user, parameter)
                 .map(ParameterSubscription::toDTO)
-                .orElseThrow();
+                .orElseThrow(() -> new EntityDoesntExistException("Parameter subscription doesn't exist"));
     }
 
     @Transactional
@@ -118,13 +119,13 @@ public class ParameterSubscriptionService {
     private User getUser(String userGuid) {
         return userRepository
                 .getByGuid(userGuid)
-                .orElseThrow();
+                .orElseThrow(() -> new EntityDoesntExistException("User doesn't exist"));
     }
 
     private Parameter getParameter(String parameterName, Event event) {
         return parameterRepository
                 .getByNameAndEvent(parameterName, event)
-                .orElseThrow();
+                .orElseThrow(() -> new EntityDoesntExistException("Parameter doesn't exist"));
     }
 
     private Parameter getParameter(
@@ -137,6 +138,6 @@ public class ParameterSubscriptionService {
     private Event getEvent(String eventName, String domainAppName) {
         return eventRepository
                 .getByNameAndDomainAppName(eventName, domainAppName)
-                .orElseThrow();
+                .orElseThrow(() -> new EntityDoesntExistException("Event doesn't exist"));
     }
 }
