@@ -1,5 +1,6 @@
 package edu.home.subscriptionservice.service;
 
+import edu.home.notificationsystem.exception.EntityDoesntExistException;
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.event.EventRepository;
 import edu.home.subscriptionservice.data.subscription.EventSubscription;
@@ -44,14 +45,7 @@ public class EventSubscriptionService {
             String domainAppName
     ) {
         Event event = getEvent(eventName, domainAppName);
-
-        return eventSubscriptionRepository
-                .getByEventAndUserGuid(event, userGuid)
-                .map(DTOConverter::convertToDTO)
-                .orElse(
-                        new EventSubscriptionDTO()
-                                .setEventName(eventName)
-                );
+        return DTOConverter.convertToDTO(getEventSubscription(userGuid, event));
     }
 
     @Transactional
@@ -81,23 +75,27 @@ public class EventSubscriptionService {
     ) {
         Event event = getEvent(eventName, domainAppName);
 
-        EventSubscription eventSubscription = eventSubscriptionRepository
-                .getByEventAndUserGuid(event, userGuid)
-                .orElseThrow();
+        EventSubscription eventSubscription = getEventSubscription(userGuid, event);
         eventSubscriptionRepository.delete(eventSubscription);
 
         return DTOConverter.convertToDTO(eventSubscription);
     }
 
+    private EventSubscription getEventSubscription(String userGuid, Event event) {
+        return eventSubscriptionRepository
+                .getByEventAndUserGuid(event, userGuid)
+                .orElseThrow(() -> new EntityDoesntExistException("Event subscription doesn't exist"));
+    }
+
     private Event getEvent(String eventName, String domainAppName) {
         return eventRepository
                 .getByNameAndDomainAppName(eventName, domainAppName)
-                .orElseThrow();
+                .orElseThrow(() -> new EntityDoesntExistException("Event doesn't exist"));
     }
 
     private User getUser(String userGuid) {
         return userRepository
                 .getByGuid(userGuid)
-                .orElseThrow();
+                .orElseThrow(() -> new EntityDoesntExistException("User doesn't exist"));
     }
 }
