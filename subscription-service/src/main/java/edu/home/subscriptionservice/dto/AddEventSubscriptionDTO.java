@@ -9,7 +9,7 @@ public class AddEventSubscriptionDTO {
 
     private String eventName;
     
-    private String domainAppName;
+    private String serviceName;
 
 
     public String getUserGuid() {
@@ -30,12 +30,12 @@ public class AddEventSubscriptionDTO {
         return this;
     }
 
-    public String getDomainAppName() {
-        return domainAppName;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public AddEventSubscriptionDTO setDomainAppName(String domainAppName) {
-        this.domainAppName = domainAppName;
+    public AddEventSubscriptionDTO setServiceName(String serviceName) {
+        this.serviceName = serviceName;
         return this;
     }
 }

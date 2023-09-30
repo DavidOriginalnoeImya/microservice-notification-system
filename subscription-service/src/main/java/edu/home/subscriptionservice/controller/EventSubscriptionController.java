@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/api/event-subs")
 public class EventSubscriptionController {
 
-    private EventSubscriptionService eventSubscriptionService;
+    private final EventSubscriptionService eventSubscriptionService;
 
     private final String userGuid = "1234";
 
@@ -61,7 +61,7 @@ public class EventSubscriptionController {
                                 )
                                 .setPathVariable(
                                         SERVICE_NAME_REQ_PARAM,
-                                        addEventSubscriptionDTO.getDomainAppName()
+                                        addEventSubscriptionDTO.getServiceName()
                                 )
                                 .build()
                 )

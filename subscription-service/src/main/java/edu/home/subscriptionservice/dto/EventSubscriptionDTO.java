@@ -4,7 +4,7 @@ public class EventSubscriptionDTO {
 
     private String eventName;
 
-    private boolean eventChecked;
+    private String serviceName;
 
     public String getEventName() {
         return eventName;
@@ -15,12 +15,12 @@ public class EventSubscriptionDTO {
         return this;
     }
 
-    public boolean isEventChecked() {
-        return eventChecked;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public EventSubscriptionDTO setEventChecked(boolean eventChecked) {
-        this.eventChecked = eventChecked;
+    public EventSubscriptionDTO setServiceName(String serviceName) {
+        this.serviceName = serviceName;
         return this;
     }
 }

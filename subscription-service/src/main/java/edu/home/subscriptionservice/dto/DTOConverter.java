@@ -11,7 +11,7 @@ public class DTOConverter {
     public static EventSubscriptionDTO convertToDTO(EventSubscription eventSubscription) {
         EventSubscriptionDTO eventSubscriptionDTO = new EventSubscriptionDTO();
         eventSubscriptionDTO.setEventName(eventSubscription.getEventName());
-        eventSubscriptionDTO.setEventChecked(eventSubscription.isChecked());
+        eventSubscriptionDTO.setServiceName(eventSubscription.getDomainAppName());
 
         return eventSubscriptionDTO;
     }

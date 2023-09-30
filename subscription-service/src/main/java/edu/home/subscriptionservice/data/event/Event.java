@@ -59,4 +59,8 @@ public class Event {
     public void setParameters(Set<Parameter> parameters) {
         this.parameters = parameters;
     }
+
+    public String getServiceName() {
+        return domainApp.getName();
+    }
 }

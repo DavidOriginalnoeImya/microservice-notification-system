@@ -2,11 +2,8 @@ package edu.home.subscriptionservice.service;
 
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.event.EventRepository;
-import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.data.subscription.EventSubscription;
 import edu.home.subscriptionservice.data.subscription.EventSubscriptionRepository;
-import edu.home.subscriptionservice.data.subscription.parameter.IParameterSubscriptionRepository;
-import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscription;
 import edu.home.subscriptionservice.data.user.User;
 import edu.home.subscriptionservice.data.user.UserRepository;
 import edu.home.subscriptionservice.dto.AddEventSubscriptionDTO;
@@ -16,10 +13,7 @@ import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class EventSubscriptionService {
@@ -68,7 +62,7 @@ public class EventSubscriptionService {
 
         Event event = getEvent(
                 addEventSubscriptionDTO.getEventName(),
-                addEventSubscriptionDTO.getDomainAppName()
+                addEventSubscriptionDTO.getServiceName()
         );
 
         EventSubscription eventSubscription = new EventSubscription(event, user);

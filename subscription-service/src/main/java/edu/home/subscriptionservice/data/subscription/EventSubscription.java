@@ -26,8 +26,6 @@ public class EventSubscription {
     @JoinColumn(name = EVENT_ID_COLUMN, insertable = false, updatable = false)
     private Event event;
 
-    private boolean checked;
-
     protected EventSubscription() {}
 
     public EventSubscription(Event event, User user) {
@@ -36,15 +34,11 @@ public class EventSubscription {
         this.event = event;
     }
 
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
-
     public String getEventName() {
         return event.getName();
+    }
+
+    public String getDomainAppName() {
+        return event.getServiceName();
     }
 }
