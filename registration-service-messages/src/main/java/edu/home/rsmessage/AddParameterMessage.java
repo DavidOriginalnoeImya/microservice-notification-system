@@ -10,8 +10,6 @@ public class AddParameterMessage extends AddEntityMessage {
 
     private final InputType inputType;
 
-    private final List<String> options;
-
     private final String eventName;
 
     private final String serviceName;
@@ -19,7 +17,6 @@ public class AddParameterMessage extends AddEntityMessage {
     private AddParameterMessage(Builder builder) {
         super(builder);
         this.inputType = builder.inputType;
-        this.options = builder.options;
         this.eventName = builder.eventName;
         this.serviceName = builder.serviceName;
     }
@@ -72,10 +69,6 @@ public class AddParameterMessage extends AddEntityMessage {
 
     public InputType getInputType() {
         return inputType;
-    }
-
-    public List<String> getOptions() {
-        return options;
     }
 
     public String getEventName() {
