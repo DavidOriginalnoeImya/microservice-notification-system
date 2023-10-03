@@ -15,6 +15,8 @@ public class DomainApp {
 
     private String name;
 
+    private String caption;
+
     private String address;
 
     public Long getId() {
@@ -27,6 +29,14 @@ public class DomainApp {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
     }
 
     public String getAddress() {

@@ -3,8 +3,7 @@ package edu.home.registrationservice.dto;
 public class DomainAppDTO {
 
     private String domainAppName;
-
-    private String domainAppAddress;
+    private String caption;
 
     public String getDomainAppName() {
         return domainAppName;
@@ -14,12 +13,11 @@ public class DomainAppDTO {
         this.domainAppName = domainAppName;
     }
 
-    public String getDomainAppAddress() {
-        return domainAppAddress;
+    public String getCaption() {
+        return caption;
     }
 
-    public void setDomainAppAddress(String domainAppAddress) {
-        this.domainAppAddress = domainAppAddress;
+    public void setDomainAppCaption(String caption) {
+        this.caption = caption;
     }
-
 }

@@ -11,6 +11,7 @@ public class DTOConverter {
     public static DomainApp convertFromDTO(AddServiceDTO addServiceDTO) {
         DomainApp domainApp = new DomainApp();
         domainApp.setName(addServiceDTO.getServiceName());
+        domainApp.setCaption(addServiceDTO.getServiceCaption());
         domainApp.setAddress(addServiceDTO.getServiceAddress());
 
         return domainApp;
@@ -26,7 +27,7 @@ public class DTOConverter {
     public static DomainAppDTO convertToDTO(DomainApp domainApp) {
         DomainAppDTO domainAppDTO = new DomainAppDTO();
         domainAppDTO.setDomainAppName(domainApp.getName());
-        domainAppDTO.setDomainAppAddress(domainApp.getAddress());
+        domainAppDTO.setDomainAppCaption(domainApp.getCaption());
 
         return domainAppDTO;
     }
