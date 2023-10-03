@@ -27,7 +27,7 @@ const EventListItem: FC<IEventListItem> = ({ event }) => {
                 {event.caption}
             <FontAwesomeIcon
                 icon={!toggled ? faCircleChevronLeft : faCircleChevronDown}
-                className="pt-1 ms-2"
+                className="pt-1 ms-auto"
             />
         </ListGroup.Item>
     );

@@ -8,8 +8,14 @@ interface IEventList {
 }
 
 const EventList: FC<IEventList> = ({ events }) => {
+    const componentStyle = {
+        width: "70%",
+        marginTop: "3%",
+        marginLeft: "5%"
+    }
+
     return (
-        <ListGroup>
+        <ListGroup style={componentStyle}>
             {
                 events.map(
                     event => <EventListItem event={event}/>
