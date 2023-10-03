@@ -20,6 +20,7 @@ public class DTOConverter {
     public static Event convertFromDTO(AddEventDTO addEventDTO) {
         Event event = new Event();
         event.setName(addEventDTO.getEventName());
+        event.setCaption(addEventDTO.getEventCaption());
 
         return event;
     }
@@ -35,6 +36,7 @@ public class DTOConverter {
     public static EventDTO convertToDTO(Event event) {
         EventDTO eventDTO = new EventDTO();
         eventDTO.setName(event.getName());
+        eventDTO.setCaption(event.getCaption());
 
         return eventDTO;
     }

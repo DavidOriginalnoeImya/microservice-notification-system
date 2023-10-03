@@ -12,6 +12,8 @@ public class Event {
 
     private String name;
 
+    private String caption;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
     private DomainApp domainApp;
@@ -26,6 +28,14 @@ public class Event {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
     }
 
     public DomainApp getDomainApp() {
