@@ -1,21 +1,35 @@
 import {makeAutoObservable, observable} from "mobx";
+import axios from "axios";
+import getResourcePath from "../utils/ServerPathCreator";
 
 
 export interface IEvent {
     name: String;
     caption: String;
-    // serviceName: String;
 }
 
 class EventStore {
-    events: IEvent[] = [
-        {name: "Event1", caption: "Событие 1"},
-        {name: "Event2", caption: "Событие 2"},
-        {name: "Event3", caption: "Событие 3"},
-    ];
+    events: IEvent[] = [];
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    public getEventsFromServer = async (serviceName: string) => {
+        const params = new URLSearchParams([["service-name", serviceName]]);
+
+        const {data} = await axios.get<IEvent[]>(
+            getResourcePath("/api/events"),
+            { params }
+        );
+
+        if (Array.isArray(data)) {
+            this.setEvents(data);
+        }
+    }
+
+    public setEvents(events: IEvent[]) {
+        this.events = events;
     }
 
     public getEvents() {

@@ -1,7 +1,8 @@
 import React, {FC} from 'react';
 import {ListGroup, ListGroupItem} from "react-bootstrap";
-import {IService} from "../store/ServiceStore";
+import serviceStore, {IService} from "../store/ServiceStore";
 import {observer} from "mobx-react-lite";
+import eventStore from "../store/EventStore";
 
 interface IServiceList {
     services: IService[];
@@ -9,6 +10,11 @@ interface IServiceList {
 
 
 const ServiceList: FC<IServiceList> = ({ services }) => {
+    const onServiceClicked = (serviceName: string) => {
+        serviceStore.setCurrentServiceName(serviceName);
+        eventStore.getEventsFromServer(serviceName);
+    }
+
     return (
         <ListGroup
             style={{width: "20%"}}
@@ -17,7 +23,10 @@ const ServiceList: FC<IServiceList> = ({ services }) => {
             {
                 services.map(
                     service =>
-                        <ListGroupItem key={service.name}>
+                        <ListGroupItem
+                            key={service.name}
+                            onClick={() => onServiceClicked(service.name)}
+                        >
                             {service.caption}
                         </ListGroupItem>
                 )

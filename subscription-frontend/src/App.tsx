@@ -1,5 +1,4 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect} from 'react';
 import './App.css';
 import EventList from "./component/EventList";
 import eventStore from "./store/EventStore";
@@ -8,15 +7,15 @@ import ServiceList from "./component/ServiceList";
 import {observer} from "mobx-react-lite";
 
 function App() {
-  const { events } = eventStore;
+  const {  events } = eventStore;
 
   const { services } = serviceStore;
 
   return (
-    <div className="d-flex">
-        <ServiceList services={services}/>
-        <EventList events={events}/>
-    </div>
+      <div className="d-flex">
+          <ServiceList services={services}/>
+          <EventList events={events}/>
+      </div>
   );
 }
 

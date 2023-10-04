@@ -11,6 +11,8 @@ class ServiceStore {
 
     services: IService[] = [];
 
+    currentServiceName: string = "";
+
     constructor() {
         makeAutoObservable(this);
         this.getServicesFromServer();
@@ -33,6 +35,13 @@ class ServiceStore {
         return this.services;
     }
 
+    public setCurrentServiceName(serviceName: string) {
+        this.currentServiceName = serviceName;
+    }
+
+    public getCurrentServiceName() {
+        return this.currentServiceName;
+    }
 }
 
 const serviceStore = new ServiceStore();
