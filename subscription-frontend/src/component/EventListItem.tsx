@@ -1,8 +1,9 @@
 import React, {FC, useState} from 'react';
 import {IEvent} from "../store/EventStore";
-import {Form, ListGroup} from "react-bootstrap";
+import {Card, Form, ListGroup} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCircleChevronDown, faCircleChevronLeft} from "@fortawesome/free-solid-svg-icons";
+import ParameterList from "./ParameterList";
 
 interface IEventListItem {
     event: IEvent;
@@ -16,20 +17,27 @@ const EventListItem: FC<IEventListItem> = ({ event }) => {
     }
 
     return (
-        <ListGroup.Item
-            onClick={() => setToggled(!toggled)}
-            className="d-flex"
+        <Card
+            bg={'light'}
         >
-            <Form.Check
-                className="me-2"
-                onClick={onCheckboxClicked}
-            />
-                {event.caption}
-            <FontAwesomeIcon
-                icon={!toggled ? faCircleChevronLeft : faCircleChevronDown}
-                className="pt-1 ms-auto"
-            />
-        </ListGroup.Item>
+            <Card.Header className="d-flex" onClick={() => setToggled(!toggled)}>
+                 <Form.Check
+                    className="me-2"
+                    onClick={onCheckboxClicked}
+                />
+                    {event.caption}
+                <FontAwesomeIcon
+                    icon={!toggled ? faCircleChevronLeft : faCircleChevronDown}
+                    className="pt-1 ms-auto"
+                />
+            </Card.Header>
+            {
+                toggled &&
+                <Card.Body className="me-3">
+
+                </Card.Body>
+            }
+        </Card>
     );
 };
 
