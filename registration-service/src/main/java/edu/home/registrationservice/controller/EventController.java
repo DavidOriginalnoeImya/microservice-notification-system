@@ -28,10 +28,17 @@ public class EventController {
         this.kafkaProducer = kafkaProducer;
     }
 
-    @GetMapping
-    public ResponseEntity<List<EventDTO>> getEvents() {
-        return ResponseEntity
-                .ok(eventService.getEvents());
+    @GetMapping()
+    public ResponseEntity<?> getEvents(@RequestParam("service-name") String domainAppName) {
+        try {
+            return ResponseEntity
+                    .ok(eventService.getEvents(domainAppName));
+        }
+        catch (EntityDoesntExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ErrorDTO("Service doesn't exist"));
+        }
     }
 
     @GetMapping("/{event_name}")
