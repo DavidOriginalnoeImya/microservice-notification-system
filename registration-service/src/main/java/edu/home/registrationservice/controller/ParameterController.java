@@ -62,7 +62,7 @@ public class ParameterController {
             kafkaProducer.sendAddEntityMessage(createAddParameterMessage(addParameterDTO));
 
             return ResponseEntity
-                    .created(URI.create(httpRequest.getRequestURL() + "/" + parameterDTO.getParameterName()))
+                    .created(URI.create(httpRequest.getRequestURL() + "/" + parameterDTO.getName()))
                     .body(parameterDTO);
         }
         catch (EntityAlreadyExistsException e) {

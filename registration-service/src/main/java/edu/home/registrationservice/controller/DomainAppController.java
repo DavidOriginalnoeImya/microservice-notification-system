@@ -59,7 +59,7 @@ public class DomainAppController {
             );
 
             return ResponseEntity
-                    .created(URI.create(httpRequest.getRequestURL() + "/" + domainAppDTO.getDomainAppName()))
+                    .created(URI.create(httpRequest.getRequestURL() + "/" + domainAppDTO.getName()))
                     .body(domainAppDTO);
         }
         catch (EntityAlreadyExistsException e) {

@@ -1,34 +1,48 @@
 package edu.home.registrationservice.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ParameterDTO {
 
-    private String parameterName;
+    private String name;
 
-    private String parameterEventName;
+    private Set<String> options = new HashSet<>();
 
-    private String parameterServiceName;
+    private String inputType;
 
-    public String getParameterName() {
-        return parameterName;
+    private String caption;
+
+    public String getName() {
+        return name;
     }
 
-    public void setParameterName(String parameterName) {
-        this.parameterName = parameterName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getParameterEventName() {
-        return parameterEventName;
+    public void setParameterOptions(Set<String> options) {
+        this.options = options;
     }
 
-    public void setParameterEventName(String parameterEventName) {
-        this.parameterEventName = parameterEventName;
+    public Set<String> getOptions() {
+        return options;
     }
 
-    public String getParameterServiceName() {
-        return parameterServiceName;
+    public void setParameterInputType(String inputType) {
+        this.inputType = inputType;
     }
 
-    public void setParameterServiceName(String parameterServiceName) {
-        this.parameterServiceName = parameterServiceName;
+    public String getInputType() {
+        return inputType;
+    }
+
+
+    public void setParameterCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public String getParameterCaption() {
+        return caption;
     }
 }

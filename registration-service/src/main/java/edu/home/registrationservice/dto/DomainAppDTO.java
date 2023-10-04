@@ -2,15 +2,16 @@ package edu.home.registrationservice.dto;
 
 public class DomainAppDTO {
 
-    private String domainAppName;
+    private String name;
+
     private String caption;
 
-    public String getDomainAppName() {
-        return domainAppName;
+    public String getName() {
+        return name;
     }
 
-    public void setDomainAppName(String domainAppName) {
-        this.domainAppName = domainAppName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCaption() {

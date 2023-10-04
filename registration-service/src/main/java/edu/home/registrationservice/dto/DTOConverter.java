@@ -7,6 +7,8 @@ import edu.home.registrationservice.dto.event.AddEventDTO;
 import edu.home.registrationservice.dto.parameter.AddParameterDTO;
 import edu.home.registrationservice.dto.service.AddServiceDTO;
 
+import java.util.Set;
+
 public class DTOConverter {
     public static DomainApp convertFromDTO(AddServiceDTO addServiceDTO) {
         DomainApp domainApp = new DomainApp();
@@ -27,7 +29,7 @@ public class DTOConverter {
 
     public static DomainAppDTO convertToDTO(DomainApp domainApp) {
         DomainAppDTO domainAppDTO = new DomainAppDTO();
-        domainAppDTO.setDomainAppName(domainApp.getName());
+        domainAppDTO.setName(domainApp.getName());
         domainAppDTO.setDomainAppCaption(domainApp.getCaption());
 
         return domainAppDTO;
@@ -43,7 +45,11 @@ public class DTOConverter {
 
     public static ParameterDTO convertToDTO(Parameter parameter) {
         ParameterDTO parameterDTO = new ParameterDTO();
-        parameterDTO.setParameterName(parameter.getName());
+        parameterDTO.setName(parameter.getName());
+        parameterDTO.setParameterCaption(parameter.getCaption());
+        parameterDTO.setParameterInputType(parameter.getInputType().name());
+        parameterDTO.setParameterOptions(parameter.getOptions());
+
 
         return parameterDTO;
     }
@@ -51,6 +57,9 @@ public class DTOConverter {
     public static Parameter convertFromDTO(AddParameterDTO addParameterDTO) {
         Parameter parameter = new Parameter();
         parameter.setName(addParameterDTO.getParameterName());
+        parameter.setCaption(addParameterDTO.getParameterCaption());
+        parameter.setInputType(Parameter.InputType.valueOf(addParameterDTO.getInputType().name()));
+        parameter.setOptions(Set.copyOf(addParameterDTO.getOptions()));
 
         return parameter;
     }
