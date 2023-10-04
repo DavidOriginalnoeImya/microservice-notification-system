@@ -31,8 +31,19 @@ public class ParameterController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ParameterDTO>> getParameters() {
-        return ResponseEntity.ok(parameterService.getParameters());
+    public ResponseEntity<?> getParameters(
+            @RequestParam("event-name") String eventName,
+            @RequestParam("service-name") String domainAppName
+    ) {
+        try {
+            return ResponseEntity
+                    .ok(parameterService.getParameters(eventName, domainAppName));
+        }
+        catch (EntityDoesntExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ErrorDTO(e.getMessage()));
+        }
     }
 
     @GetMapping("/{parameter_name}")

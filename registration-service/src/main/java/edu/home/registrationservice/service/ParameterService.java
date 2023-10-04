@@ -32,12 +32,10 @@ public class ParameterService {
 
     @Transactional
     public ParameterDTO addParameter(AddParameterDTO addParameterDTO) {
-        Event event = eventRepository
-                .getByNameAndDomainAppName(
-                        addParameterDTO.getParameterEvent(),
-                        addParameterDTO.getParameterDomainService()
-                )
-                .orElseThrow(() -> new EntityDoesntExistException("Parent entity doesn't exist"));
+        Event event = getEvent(
+                addParameterDTO.getParameterEvent(),
+                addParameterDTO.getParameterDomainService()
+        );
 
         if (!parameterRepository.existsByNameAndEvent(addParameterDTO.getParameterName(), event)) {
             Parameter parameter = DTOConverter.convertFromDTO(addParameterDTO);
@@ -50,8 +48,10 @@ public class ParameterService {
     }
 
     @Transactional
-    public List<ParameterDTO> getParameters() {
-        return parameterRepository.findAll()
+    public List<ParameterDTO> getParameters(String eventName, String domainAppName) {
+        Event event = getEvent(eventName, domainAppName);
+
+        return parameterRepository.getByEvent(event)
                 .stream()
                 .map(DTOConverter::convertToDTO)
                 .collect(Collectors.toList());
@@ -59,14 +59,18 @@ public class ParameterService {
 
     @Transactional
     public ParameterDTO getParameter(String parameterName, String eventName, String serviceName) {
-        Event event = eventRepository
-                .getByNameAndDomainAppName(eventName, serviceName)
-                .orElseThrow(() -> new EntityDoesntExistException("Parent entity doesn't exist"));
+        Event event = getEvent(eventName, serviceName);
 
         Parameter parameter = parameterRepository
                 .getByNameAndEvent(parameterName, event)
                 .orElseThrow(() -> new EntityDoesntExistException("Parameter with this name doesn't exist"));
 
         return DTOConverter.convertToDTO(parameter);
+    }
+
+    private Event getEvent(String eventName, String serviceName) {
+        return eventRepository
+                .getByNameAndDomainAppName(eventName, serviceName)
+                .orElseThrow(() -> new EntityDoesntExistException("Parent entity doesn't exist"));
     }
 }
