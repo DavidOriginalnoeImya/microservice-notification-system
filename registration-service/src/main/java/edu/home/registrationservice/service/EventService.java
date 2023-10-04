@@ -29,9 +29,7 @@ public class EventService {
 
     @Transactional
     public EventDTO addEvent(AddEventDTO addEventDTO) {
-        DomainApp domainApp = domainAppRepository
-                .getByName(addEventDTO.getEventDomainServiceName())
-                .orElseThrow(() -> new EntityDoesntExistException("Service doesn't exist"));
+        DomainApp domainApp = getDomainApp(addEventDTO.getEventDomainServiceName());
 
         if (!eventRepository.existsByName(addEventDTO.getEventName())) {
             Event event = DTOConverter.convertFromDTO(addEventDTO);
@@ -61,5 +59,20 @@ public class EventService {
                     );
 
             return DTOConverter.convertToDTO(event);
+    }
+
+    public List<EventDTO> getEvents(String domainAppName) {
+        DomainApp domainApp = getDomainApp(domainAppName);
+
+        return eventRepository
+                .getByDomainApp(domainApp)
+                .stream().map(DTOConverter::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private DomainApp getDomainApp(String domainAppName) {
+        return domainAppRepository
+                .getByName(domainAppName)
+                .orElseThrow(() -> new EntityDoesntExistException("Service doesn't exist"));
     }
 };
