@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {IEvent} from "../store/EventStore";
 import {Button, Form, ListGroup} from "react-bootstrap";
 import EventListItem from "./EventListItem";
+import parameterStore from "../store/ParameterStore";
 
 interface IEventList {
     events: IEvent[]

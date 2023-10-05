@@ -5,11 +5,18 @@ import eventStore from "./store/EventStore";
 import serviceStore from "./store/ServiceStore";
 import ServiceList from "./component/ServiceList";
 import {observer} from "mobx-react-lite";
+import parameterStore from "./store/ParameterStore";
 
 function App() {
   const {  events } = eventStore;
 
-  const { services } = serviceStore;
+  const { services, currentServiceName } = serviceStore;
+
+  const { cleanParameters } = parameterStore;
+
+    useEffect(() => {
+        cleanParameters();
+    }, [currentServiceName]);
 
   return (
       <div className="d-flex">

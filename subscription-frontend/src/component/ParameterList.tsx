@@ -1,8 +1,9 @@
 import React, {FC} from 'react';
 import {Form} from "react-bootstrap";
+import {IParameter} from "../store/ParameterStore";
 
 interface IParameterList {
-    parameters: string[];
+    parameters: IParameter[];
 }
 
 const ParameterList: FC<IParameterList> = ({ parameters }) => {
@@ -15,7 +16,7 @@ const ParameterList: FC<IParameterList> = ({ parameters }) => {
                             <Form.Check
                                 className="me-2"
                             />
-                            { parameter }
+                            { parameter.parameterCaption }
                         </div>
 
                 )
