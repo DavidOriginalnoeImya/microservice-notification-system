@@ -21,7 +21,7 @@ public class ParameterDTO {
         this.name = name;
     }
 
-    public void setParameterOptions(Set<String> options) {
+    public void setOptions(Set<String> options) {
         this.options = options;
     }
 
@@ -29,7 +29,7 @@ public class ParameterDTO {
         return options;
     }
 
-    public void setParameterInputType(String inputType) {
+    public void setInputType(String inputType) {
         this.inputType = inputType;
     }
 
@@ -38,11 +38,11 @@ public class ParameterDTO {
     }
 
 
-    public void setParameterCaption(String caption) {
+    public void setCaption(String caption) {
         this.caption = caption;
     }
 
-    public String getParameterCaption() {
+    public String getCaption() {
         return caption;
     }
 }
