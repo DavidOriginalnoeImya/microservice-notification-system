@@ -4,8 +4,8 @@ import getResourcePath from "../utils/ServerPathCreator";
 
 
 export interface IEvent {
-    name: String;
-    caption: String;
+    name: string;
+    caption: string;
 }
 
 class EventStore {
