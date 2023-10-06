@@ -63,9 +63,6 @@ public class EventSubscriptionService {
 
         EventSubscription eventSubscription = new EventSubscription(event, user);
 
-        List<ParameterSubscriptionDTO> parameterSubscriptionsDTO = parameterSubscriptionService
-                        .addParameterSubscriptions(user, event.getParameters());
-
         return DTOConverter.convertToDTO(
                 eventSubscriptionRepository.save(eventSubscription)
         );
