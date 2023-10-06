@@ -1,18 +1,16 @@
 package edu.home.subscriptionservice.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+public class AddSingleStringParamSubscriptionDTO
+        extends AddParameterSubscriptionDTO {
 
-public class AddSingleStringParamSubscriptionDTO extends AddParameterSubscriptionDTO {
+    private String value;
 
-    private List<String> values = new ArrayList<>();
-
-    public List<String> getValues() {
-        return values;
+    public String getValue() {
+        return value;
     }
 
-    public AddParameterSubscriptionDTO setValue(List<String> value) {
-        values = value;
+    public AddParameterSubscriptionDTO setValue(String value) {
+        this.value = value;
         return this;
     }
 }

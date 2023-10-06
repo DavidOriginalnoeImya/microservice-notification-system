@@ -7,6 +7,7 @@ import edu.home.subscriptionservice.data.subscription.Id;
 import edu.home.subscriptionservice.data.user.User;
 import edu.home.subscriptionservice.dto.AddMultiStringParamSubscriptionDTO;
 import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
+import edu.home.subscriptionservice.dto.AddSingleStringParamSubscriptionDTO;
 import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import jakarta.persistence.*;
 
@@ -59,10 +60,16 @@ public abstract class ParameterSubscription {
         User user, Parameter parameter,
         AddParameterSubscriptionDTO addParameterSubscriptionDTO
     ) {
-        if (addParameterSubscriptionDTO
-                instanceof AddMultiStringParamSubscriptionDTO multiStringDTO) {
+        if (addParameterSubscriptionDTO instanceof
+                AddMultiStringParamSubscriptionDTO multiStringDTO) {
             return new MultiStringParameterSubscription(
                     user, parameter, multiStringDTO.getValues()
+            );
+        }
+        else if (addParameterSubscriptionDTO instanceof
+                AddSingleStringParamSubscriptionDTO singleStringDTO) {
+            return new SingleStringParameterSubscription(
+                    user, parameter, singleStringDTO.getValue()
             );
         }
 

@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 @JsonSubTypes({
-        @JsonSubTypes.Type(AddMultiStringParamSubscriptionDTO.class)
+        @JsonSubTypes.Type(AddMultiStringParamSubscriptionDTO.class),
+        @JsonSubTypes.Type(AddSingleStringParamSubscriptionDTO.class)
 })
 public abstract class AddParameterSubscriptionDTO {
 
