@@ -46,9 +46,9 @@ public class DTOConverter {
     public static ParameterDTO convertToDTO(Parameter parameter) {
         ParameterDTO parameterDTO = new ParameterDTO();
         parameterDTO.setName(parameter.getName());
-        parameterDTO.setParameterCaption(parameter.getCaption());
-        parameterDTO.setParameterInputType(parameter.getInputType().name());
-        parameterDTO.setParameterOptions(parameter.getOptions());
+        parameterDTO.setCaption(parameter.getCaption());
+        parameterDTO.setInputType(parameter.getInputType().name());
+        parameterDTO.setOptions(parameter.getOptions());
 
 
         return parameterDTO;
