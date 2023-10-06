@@ -1,5 +1,6 @@
 package edu.home.registrationservice.dto.parameter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddParameterDTO {
@@ -14,7 +15,7 @@ public class AddParameterDTO {
 
     private InputType inputType;
 
-    private List<String> options;
+    private List<String> options = new ArrayList<>();
 
     public enum InputType {
         INPUT, CHECKBOX, SELECT, MULTISELECT
