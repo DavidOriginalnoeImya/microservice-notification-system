@@ -4,14 +4,17 @@ import getResourcePath from "../utils/ServerPathCreator";
 
 export interface IParameter {
     name: string;
-    parameterCaption: string;
+    caption: string;
     options: string[];
     inputType: InputType;
     value?: string[];
 }
 
-enum InputType {
+export enum InputType {
     MULTISELECT = "MULTISELECT",
+    INPUT = "INPUT",
+    SELECT = "SELECT",
+    CHECKBOX = "CHECKBOX"
 }
 
 class ParameterStore {

@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {Form} from "react-bootstrap";
 import {IParameter} from "../store/ParameterStore";
+import Parameter from "./Parameter";
 
 interface IParameterList {
     parameters: IParameter[];
@@ -11,14 +12,7 @@ const ParameterList: FC<IParameterList> = ({ parameters }) => {
         <>
             {
                 parameters.map(
-                    (parameter) =>
-                        <div className="d-flex">
-                            <Form.Check
-                                className="me-2"
-                            />
-                            { parameter.parameterCaption }
-                        </div>
-
+                    (parameter) => <Parameter parameter={parameter} />
                 )
             }
         </>
