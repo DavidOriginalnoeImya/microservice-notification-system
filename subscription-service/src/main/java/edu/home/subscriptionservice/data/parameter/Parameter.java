@@ -22,17 +22,6 @@ public class Parameter {
     @ManyToOne
     private Event event;
 
-    public enum InputType {
-
-        INPUT,
-
-        CHECKBOX,
-
-        SELECT,
-
-        MULTISELECT
-    }
-
     public Long getId() {
         return id;
     }

@@ -2,6 +2,7 @@ package edu.home.subscriptionservice.data.subscription.parameter;
 
 import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import edu.home.subscriptionservice.data.event.Event;
+import edu.home.subscriptionservice.data.parameter.InputType;
 import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.data.subscription.Id;
 import edu.home.subscriptionservice.data.user.User;
@@ -15,14 +16,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import static edu.home.subscriptionservice.data.parameter.Parameter.InputType.MULTISELECT;
+import static edu.home.subscriptionservice.data.parameter.InputType.MULTISELECT;
 
 @Entity
 @Inheritance
 //@DiscriminatorValue("PS")
 public abstract class ParameterSubscription {
 
-    private static final Map<Parameter.InputType,
+    private static final Map<InputType,
             BiFunction<User, Parameter, ? extends ParameterSubscription>> psFactory = Map.of(
         MULTISELECT, (u, p) -> new MultiStringParameterSubscription(u, p, List.of())
     );

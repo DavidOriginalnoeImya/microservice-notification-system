@@ -1,20 +1,20 @@
 package edu.home.subscriptionservice.dto;
 
-import edu.home.subscriptionservice.data.parameter.Parameter;
+import edu.home.subscriptionservice.data.parameter.InputType;
 
 public class AddParameterDTO extends AddEntityDTO {
 
-    private Parameter.InputType parameterInputType;
+    private InputType parameterInputType;
 
     private String parameterEventName;
 
     private String parameterServiceName;
 
-    public Parameter.InputType getParameterInputType() {
+    public InputType getParameterInputType() {
         return parameterInputType;
     }
 
-    public void setParameterInputType(Parameter.InputType parameterInputType) {
+    public void setParameterInputType(InputType parameterInputType) {
         this.parameterInputType = parameterInputType;
     }
 

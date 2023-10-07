@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "inputType")
 @JsonSubTypes({
-        @JsonSubTypes.Type(AddMultiStringParamSubscriptionDTO.class),
-        @JsonSubTypes.Type(AddSingleStringParamSubscriptionDTO.class)
+        @JsonSubTypes.Type(value = AddMultiStringParamSubscriptionDTO.class, name = "MULTISELECT"),
+        @JsonSubTypes.Type(
+                value = AddSingleStringParamSubscriptionDTO.class, names = {"INPUT", "SELECT"}
+        )
 })
 public abstract class AddParameterSubscriptionDTO {
 
