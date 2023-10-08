@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import {IEvent} from "../store/EventStore";
-import {Button, Form, ListGroup} from "react-bootstrap";
-import EventListItem from "./EventListItem";
-import parameterStore from "../store/ParameterStore";
+import {ListGroup} from "react-bootstrap";
+import Event from "./Event";
+import {observer} from "mobx-react-lite";
 
 interface IEventList {
-    events: IEvent[]
+    events: IEvent[];
 }
 
 const EventList: FC<IEventList> = ({ events }) => {
@@ -19,7 +19,11 @@ const EventList: FC<IEventList> = ({ events }) => {
         <ListGroup style={componentStyle}>
             {
                 events.map(
-                    event => <EventListItem event={event}/>
+                    event =>
+                        <Event
+                            event={event}
+                            key={event.name}
+                        />
                 )
             }
         </ListGroup>

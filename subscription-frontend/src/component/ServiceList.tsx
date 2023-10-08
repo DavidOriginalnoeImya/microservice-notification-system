@@ -3,6 +3,7 @@ import {ListGroup, ListGroupItem} from "react-bootstrap";
 import serviceStore, {IService} from "../store/ServiceStore";
 import {observer} from "mobx-react-lite";
 import eventStore from "../store/EventStore";
+import eventSubscriptionStore from "../store/EventSubscriptionStore";
 
 interface IServiceList {
     services: IService[];
@@ -13,6 +14,7 @@ const ServiceList: FC<IServiceList> = ({ services }) => {
     const onServiceClicked = (serviceName: string) => {
         serviceStore.setCurrentServiceName(serviceName);
         eventStore.getEventsFromServer(serviceName);
+        eventSubscriptionStore.initEventSubscriptions(serviceName);
     }
 
     return (

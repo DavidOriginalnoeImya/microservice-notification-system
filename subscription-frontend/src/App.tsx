@@ -6,6 +6,7 @@ import serviceStore from "./store/ServiceStore";
 import ServiceList from "./component/ServiceList";
 import {observer} from "mobx-react-lite";
 import parameterStore from "./store/ParameterStore";
+import eventSubscriptionStore from "./store/EventSubscriptionStore";
 
 function App() {
   const {  events } = eventStore;

@@ -7,20 +7,26 @@ import ParameterList from "./ParameterList";
 import parameterStore from "../store/ParameterStore";
 import {observer} from "mobx-react-lite";
 import serviceStore from "../store/ServiceStore";
+import eventSubscriptionStore from "../store/EventSubscriptionStore";
 
-interface IEventListItem {
+interface IEventListComponent {
     event: IEvent;
 }
 
-const EventListItem: FC<IEventListItem> = ({ event }) => {
+const Event: FC<IEventListComponent> = ({ event }) => {
     const [toggled, setToggled] = useState(false);
+
+    const { eventSubscriptions, addEventSubscriptions, delEventSubscription } = eventSubscriptionStore;
 
     const { initParameters, parameters } = parameterStore;
 
     const { currentServiceName } = serviceStore;
 
-    const onCheckboxClicked = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-        event.stopPropagation();
+    const onCheckboxClicked = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.stopPropagation();
+
+        e.target.checked ? addEventSubscriptions(event.name, currentServiceName) :
+                           delEventSubscription(event.name, currentServiceName);
     }
 
     const onEventClicked = (eventName: string) => {
@@ -36,13 +42,12 @@ const EventListItem: FC<IEventListItem> = ({ event }) => {
     }
 
     return (
-        <Card
-            bg={'light'}
-        >
+        <Card bg={'light'}>
             <Card.Header className="d-flex" onClick={() => onEventClicked(event.name)}>
                  <Form.Check
                     className="me-2"
-                    onClick={onCheckboxClicked}
+                    onChange={onCheckboxClicked}
+                    defaultChecked={eventSubscriptions.has(event.name)}
                 />
                     {event.caption}
                 <FontAwesomeIcon
@@ -62,4 +67,4 @@ const EventListItem: FC<IEventListItem> = ({ event }) => {
     );
 };
 
-export default observer(EventListItem);
+export default observer(Event);
