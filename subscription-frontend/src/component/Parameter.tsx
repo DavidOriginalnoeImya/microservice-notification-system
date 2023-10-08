@@ -4,6 +4,7 @@ import MultiselectParameter from "./MultiselectParameter";
 import {Form} from "react-bootstrap";
 import InputParameter from "./InputParameter";
 import SelectParameter from "./SelectParameter";
+import parameterSubscriptionStore from "../store/ParameterSubscriptionStore";
 
 export interface IParameterComponent {
     parameter: IParameter
@@ -17,14 +18,21 @@ const Parameter: FC<IParameterComponent> = ({ parameter }) => {
         CHECKBOX: null
     }
 
+    const { addParameterSubscription } = parameterSubscriptionStore;
+
     const isCheckboxParameter = () => {
         return parameter.inputType === InputType.CHECKBOX;
+    }
+
+    const onCheckboxChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.stopPropagation();
     }
 
     return (
         <div className="d-flex">
             <Form.Check
                 className="me-2"
+                onChange={onCheckboxChanged}
             />
             <div>
                 { parameter.caption }
