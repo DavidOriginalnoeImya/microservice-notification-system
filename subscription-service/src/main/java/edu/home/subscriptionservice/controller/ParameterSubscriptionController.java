@@ -1,13 +1,16 @@
 package edu.home.subscriptionservice.controller;
 
+import edu.home.notificationsystem.exception.EntityAlreadyExistsException;
 import edu.home.notificationsystem.exception.EntityDoesntExistException;
 import edu.home.subscriptionservice.controller.util.UriBuilder;
+import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.UpdateParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.GetParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import edu.home.subscriptionservice.service.ParameterSubscriptionService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,6 +79,34 @@ public class ParameterSubscriptionController {
             return ResponseEntity
                     .status(PARAM_SUB_DOESNT_EXIST)
                     .body("Current user isn't subscribe to this parameter");
+        }
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addParameterSubscription(
+            HttpServletRequest httpRequest,
+            @RequestBody AddParameterSubscriptionDTO addParameterSubscriptionDTO
+    ) {
+        try {
+            ParameterSubscriptionDTO parameterSubscriptionDTO = parameterSubscriptionService
+                    .addParameterSubscription(
+                            addParameterSubscriptionDTO.setUserGuid(userGuid)
+                    );
+
+            return ResponseEntity
+                    .created(
+                        getLocationUri(
+                            httpRequest, parameterSubscriptionDTO.getParameterName(),
+                            parameterSubscriptionDTO.getEventName(),
+                            parameterSubscriptionDTO.getServiceName()
+                        )
+                    )
+                    .body(parameterSubscriptionDTO);
+        }
+        catch (EntityDoesntExistException | EntityAlreadyExistsException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         }
     }
 

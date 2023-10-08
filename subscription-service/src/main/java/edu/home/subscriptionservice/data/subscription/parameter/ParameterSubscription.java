@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import static edu.home.subscriptionservice.data.parameter.InputType.MULTISELECT;
+import static edu.home.subscriptionservice.data.parameter.InputType.*;
 
 @Entity
 @Inheritance
@@ -24,7 +24,10 @@ public abstract class ParameterSubscription {
 
     private static final Map<InputType,
             BiFunction<User, Parameter, ? extends ParameterSubscription>> psFactory = Map.of(
-        MULTISELECT, (u, p) -> new MultiStringParameterSubscription(u, p, List.of())
+        MULTISELECT, (u, p) -> new MultiStringParameterSubscription(u, p, List.of()),
+        INPUT, (u, p) -> new SingleStringParameterSubscription(u, p, ""),
+        SELECT, (u, p) -> new SingleStringParameterSubscription(u, p, "")
+//        CHECKBOX, (u, p) -> new SingleStringParameterSubscription(u, p, "")
     );
 
     private static final String USER_ID_COLUMN = "user_id";

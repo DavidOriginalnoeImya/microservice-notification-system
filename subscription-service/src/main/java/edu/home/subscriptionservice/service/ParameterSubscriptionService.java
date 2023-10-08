@@ -1,5 +1,6 @@
 package edu.home.subscriptionservice.service;
 
+import edu.home.notificationsystem.exception.EntityAlreadyExistsException;
 import edu.home.notificationsystem.exception.EntityDoesntExistException;
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.event.EventRepository;
@@ -9,10 +10,7 @@ import edu.home.subscriptionservice.data.subscription.parameter.IParameterSubscr
 import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscription;
 import edu.home.subscriptionservice.data.user.User;
 import edu.home.subscriptionservice.data.user.UserRepository;
-import edu.home.subscriptionservice.dto.UpdateParameterSubscriptionDTO;
-import edu.home.subscriptionservice.dto.DTOConverter;
-import edu.home.subscriptionservice.dto.GetParameterSubscriptionDTO;
-import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
+import edu.home.subscriptionservice.dto.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +42,7 @@ public class ParameterSubscriptionService {
         this.parameterSubscriptionRepository = parameterSubscriptionRepository;
     }
 
+    @Transactional
     public ParameterSubscriptionDTO getParameterSubscription(
             GetParameterSubscriptionDTO getParameterSubscriptionDTO
     ) {
@@ -94,25 +93,27 @@ public class ParameterSubscriptionService {
                 .convertToDTO(parameterSubscriptionRepository.save(ps));
     }
 
-    List<ParameterSubscriptionDTO> addParameterSubscriptions(
-            User user, Set<Parameter> parameters
+    @Transactional
+    public ParameterSubscriptionDTO addParameterSubscription(
+            AddParameterSubscriptionDTO addParameterSubscriptionDTO
     ) {
-        List<ParameterSubscriptionDTO> parameterSubscriptionsDTO = new LinkedList<>();
+        User user = getUser(addParameterSubscriptionDTO.getUserGuid());
 
-        for (Parameter parameter: parameters) {
-            if (!parameterSubscriptionRepository.existsByUserAndParameter(user, parameter)) {
-                ParameterSubscription parameterSubscription = ParameterSubscription
-                        .getParameterSubscription(user, parameter);
+        Parameter parameter = getParameter(
+                addParameterSubscriptionDTO.getParameterName(),
+                addParameterSubscriptionDTO.getEventName(),
+                addParameterSubscriptionDTO.getDomainAppName()
+        );
 
-                parameterSubscriptionsDTO.add(
-                        DTOConverter.convertToDTO(
-                                parameterSubscriptionRepository.save(parameterSubscription)
-                        )
-                );
-            }
+        if (!parameterSubscriptionRepository.existsByUserAndParameter(user, parameter)) {
+            ParameterSubscription parameterSubscription = ParameterSubscription
+                    .getParameterSubscription(user, parameter);
+
+            return DTOConverter.convertToDTO(
+                    parameterSubscriptionRepository.save(parameterSubscription)
+            );
         }
-
-        return parameterSubscriptionsDTO;
+        else throw new EntityAlreadyExistsException("User already subscribed to this parameter");
     }
 
     private User getUser(String userGuid) {
