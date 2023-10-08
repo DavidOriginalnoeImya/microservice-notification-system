@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class ParameterSubscriptionService {
 
+    public static final String PARAM_SUB_DOESNT_EXIST = "Parameter subscription doesn't exist";
     private final ParameterRepository parameterRepository;
 
     private final EventRepository eventRepository;
@@ -57,7 +58,7 @@ public class ParameterSubscriptionService {
         return parameterSubscriptionRepository
                 .getByUserAndParameter(user, parameter)
                 .map(ParameterSubscription::toDTO)
-                .orElseThrow(() -> new EntityDoesntExistException("Parameter subscription doesn't exist"));
+                .orElseThrow(() -> new EntityDoesntExistException(PARAM_SUB_DOESNT_EXIST));
     }
 
     @Transactional
@@ -114,6 +115,25 @@ public class ParameterSubscriptionService {
             );
         }
         else throw new EntityAlreadyExistsException("User already subscribed to this parameter");
+    }
+
+    @Transactional
+    public void deleteParameterSubscription(
+            DeleteParameterSubscriptionDTO deleteParameterSubscriptionDTO
+    ) {
+        User user = getUser(deleteParameterSubscriptionDTO.getUserGuid());
+
+        Parameter parameter = getParameter(
+                deleteParameterSubscriptionDTO.getParameterName(),
+                deleteParameterSubscriptionDTO.getEventName(),
+                deleteParameterSubscriptionDTO.getDomainAppName()
+        );
+
+        ParameterSubscription ps = parameterSubscriptionRepository
+                .getByUserAndParameter(user, parameter)
+                .orElseThrow(() -> new EntityDoesntExistException(PARAM_SUB_DOESNT_EXIST));
+
+        parameterSubscriptionRepository.delete(ps);
     }
 
     private User getUser(String userGuid) {

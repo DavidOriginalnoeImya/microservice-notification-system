@@ -3,10 +3,7 @@ package edu.home.subscriptionservice.controller;
 import edu.home.notificationsystem.exception.EntityAlreadyExistsException;
 import edu.home.notificationsystem.exception.EntityDoesntExistException;
 import edu.home.subscriptionservice.controller.util.UriBuilder;
-import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
-import edu.home.subscriptionservice.dto.UpdateParameterSubscriptionDTO;
-import edu.home.subscriptionservice.dto.GetParameterSubscriptionDTO;
-import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
+import edu.home.subscriptionservice.dto.*;
 import edu.home.subscriptionservice.service.ParameterSubscriptionService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
@@ -139,6 +136,31 @@ public class ParameterSubscriptionController {
         }
     }
 
+    @DeleteMapping("/{parameter-name}")
+    public ResponseEntity<?> deleteParameterSubscription(
+            @PathVariable("parameter-name") String parameterName,
+            @RequestParam("event-name") String eventName,
+            @RequestParam("service-name") String domainAppName
+    ) {
+        try {
+            parameterSubscriptionService.deleteParameterSubscription(
+                    new DeleteParameterSubscriptionDTO()
+                            .setUserGuid(userGuid)
+                            .setParameterName(parameterName)
+                            .setEventName(eventName)
+                            .setDomainAppName(domainAppName)
+            );
+
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        }
+        catch (EntityDoesntExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
 
     private URI getLocationUri(
             HttpServletRequest httpRequest, String parameterName,
