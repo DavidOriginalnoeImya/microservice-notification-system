@@ -1,14 +1,13 @@
 package edu.home.subscriptionservice.data.subscription.parameter;
 
-import edu.home.subscriptionservice.data.domainapp.DomainApp;
 import edu.home.subscriptionservice.data.event.Event;
 import edu.home.subscriptionservice.data.parameter.InputType;
 import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.data.subscription.Id;
 import edu.home.subscriptionservice.data.user.User;
-import edu.home.subscriptionservice.dto.AddMultiStringParamSubscriptionDTO;
-import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
-import edu.home.subscriptionservice.dto.AddSingleStringParamSubscriptionDTO;
+import edu.home.subscriptionservice.dto.UpdateMultiStringParamSubscriptionDTO;
+import edu.home.subscriptionservice.dto.UpdateParameterSubscriptionDTO;
+import edu.home.subscriptionservice.dto.UpdateSingleStringParamSubscriptionDTO;
 import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import jakarta.persistence.*;
 
@@ -59,16 +58,16 @@ public abstract class ParameterSubscription {
 
     public static ParameterSubscription getParameterSubscription(
         User user, Parameter parameter,
-        AddParameterSubscriptionDTO addParameterSubscriptionDTO
+        UpdateParameterSubscriptionDTO addParameterSubscriptionDTO
     ) {
         if (addParameterSubscriptionDTO instanceof
-                AddMultiStringParamSubscriptionDTO multiStringDTO) {
+                UpdateMultiStringParamSubscriptionDTO multiStringDTO) {
             return new MultiStringParameterSubscription(
                     user, parameter, multiStringDTO.getValues()
             );
         }
         else if (addParameterSubscriptionDTO instanceof
-                AddSingleStringParamSubscriptionDTO singleStringDTO) {
+                UpdateSingleStringParamSubscriptionDTO singleStringDTO) {
             return new SingleStringParameterSubscription(
                     user, parameter, singleStringDTO.getValue()
             );

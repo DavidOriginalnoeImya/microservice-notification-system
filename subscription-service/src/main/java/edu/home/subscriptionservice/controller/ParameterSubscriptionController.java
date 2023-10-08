@@ -2,16 +2,17 @@ package edu.home.subscriptionservice.controller;
 
 import edu.home.notificationsystem.exception.EntityDoesntExistException;
 import edu.home.subscriptionservice.controller.util.UriBuilder;
-import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
+import edu.home.subscriptionservice.dto.UpdateParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.GetParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import edu.home.subscriptionservice.service.ParameterSubscriptionService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/parameter-subs")
@@ -78,31 +79,27 @@ public class ParameterSubscriptionController {
         }
     }
 
-    @PostMapping(consumes = "application/json")
-    public ResponseEntity<?> addParameterSubscription(
+    @PutMapping(consumes = "application/json")
+    public ResponseEntity<?> updateParameterSubscription(
             HttpServletRequest httpRequest,
-            @RequestBody AddParameterSubscriptionDTO addParameterSubscriptionDTO
+            @RequestBody UpdateParameterSubscriptionDTO updateParameterSubscriptionDTO
     ) {
         try {
             ParameterSubscriptionDTO parameterSubscriptionDTO = parameterSubscriptionService
-                    .addParameterSubscription(
-                            addParameterSubscriptionDTO.setUserGuid(userGuid)
+                    .updateParameterSubscription(
+                            updateParameterSubscriptionDTO.setUserGuid(userGuid)
                     );
 
             return ResponseEntity
-                    .created(
-                            new UriBuilder(httpRequest)
-                                    .setPathSegment(parameterSubscriptionDTO.getParameterName())
-                                    .setPathVariable(
-                                            EVENT_NAME_REQ_PARAM,
-                                            parameterSubscriptionDTO.getEventName()
-                                    )
-                                    .setPathVariable(
-                                            SERVICE_NAME_REQ_PARAM,
-                                            parameterSubscriptionDTO.getServiceName()
-                                    ).build()
+                    .ok()
+                    .header(
+                        HttpHeaders.LOCATION, getLocationUri(
+                                httpRequest, parameterSubscriptionDTO.getParameterName(),
+                                parameterSubscriptionDTO.getEventName(),
+                                parameterSubscriptionDTO.getServiceName()
+                        ).toString()
                     )
-                    .body(parameterSubscriptionDTO);
+                    .build();
         }
         catch (EntityDoesntExistException e) {
             return ResponseEntity
@@ -110,4 +107,17 @@ public class ParameterSubscriptionController {
                     .body(e.getMessage());
         }
     }
+
+
+    private URI getLocationUri(
+            HttpServletRequest httpRequest, String parameterName,
+            String eventName, String serviceName
+    ) {
+        return new UriBuilder(httpRequest)
+                .setPathSegment(parameterName)
+                .setPathVariable(EVENT_NAME_REQ_PARAM, eventName)
+                .setPathVariable(SERVICE_NAME_REQ_PARAM, serviceName)
+                .build();
+    }
+
 }

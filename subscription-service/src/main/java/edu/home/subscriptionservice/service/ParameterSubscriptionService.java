@@ -9,12 +9,11 @@ import edu.home.subscriptionservice.data.subscription.parameter.IParameterSubscr
 import edu.home.subscriptionservice.data.subscription.parameter.ParameterSubscription;
 import edu.home.subscriptionservice.data.user.User;
 import edu.home.subscriptionservice.data.user.UserRepository;
-import edu.home.subscriptionservice.dto.AddParameterSubscriptionDTO;
+import edu.home.subscriptionservice.dto.UpdateParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.DTOConverter;
 import edu.home.subscriptionservice.dto.GetParameterSubscriptionDTO;
 import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
 import jakarta.transaction.Transactional;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -77,8 +76,8 @@ public class ParameterSubscriptionService {
     }
 
     @Transactional
-    public ParameterSubscriptionDTO addParameterSubscription(
-            AddParameterSubscriptionDTO addParameterSubscriptionDTO
+    public ParameterSubscriptionDTO updateParameterSubscription(
+            UpdateParameterSubscriptionDTO addParameterSubscriptionDTO
     ) {
         User user = getUser(addParameterSubscriptionDTO.getUserGuid());
 

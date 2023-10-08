@@ -5,7 +5,7 @@ import edu.home.subscriptionservice.data.parameter.InputType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddMultiStringParamSubscriptionDTO extends AddParameterSubscriptionDTO {
+public class UpdateMultiStringParamSubscriptionDTO extends UpdateParameterSubscriptionDTO {
 
     public final String inputType = InputType.MULTISELECT.name();
 
@@ -15,7 +15,7 @@ public class AddMultiStringParamSubscriptionDTO extends AddParameterSubscription
         return values;
     }
 
-    public AddParameterSubscriptionDTO setValue(List<String> value) {
+    public UpdateParameterSubscriptionDTO setValue(List<String> value) {
         values = value;
         return this;
     }

@@ -1,7 +1,7 @@
 package edu.home.subscriptionservice.dto;
 
-public class AddSingleStringParamSubscriptionDTO
-        extends AddParameterSubscriptionDTO {
+public class UpdateSingleStringParamSubscriptionDTO
+        extends UpdateParameterSubscriptionDTO {
 
     private String value;
 
@@ -9,7 +9,7 @@ public class AddSingleStringParamSubscriptionDTO
         return value;
     }
 
-    public AddParameterSubscriptionDTO setValue(String value) {
+    public UpdateParameterSubscriptionDTO setValue(String value) {
         this.value = value;
         return this;
     }

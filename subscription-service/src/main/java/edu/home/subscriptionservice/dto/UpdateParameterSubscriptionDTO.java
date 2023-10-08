@@ -6,12 +6,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "inputType")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AddMultiStringParamSubscriptionDTO.class, name = "MULTISELECT"),
         @JsonSubTypes.Type(
-                value = AddSingleStringParamSubscriptionDTO.class, names = {"INPUT", "SELECT"}
+                value = UpdateMultiStringParamSubscriptionDTO.class, name = "MULTISELECT"
+        ),
+        @JsonSubTypes.Type(
+                value = UpdateSingleStringParamSubscriptionDTO.class, names = {"INPUT", "SELECT"}
         )
 })
-public abstract class AddParameterSubscriptionDTO {
+public abstract class UpdateParameterSubscriptionDTO {
 
     @JsonIgnore
     private String userGuid;
@@ -26,7 +28,7 @@ public abstract class AddParameterSubscriptionDTO {
         return userGuid;
     }
 
-    public AddParameterSubscriptionDTO setUserGuid(String userGuid) {
+    public UpdateParameterSubscriptionDTO setUserGuid(String userGuid) {
         this.userGuid = userGuid;
         return this;
     }
@@ -35,7 +37,7 @@ public abstract class AddParameterSubscriptionDTO {
         return parameterName;
     }
 
-    public AddParameterSubscriptionDTO setParameterName(String parameterName) {
+    public UpdateParameterSubscriptionDTO setParameterName(String parameterName) {
         this.parameterName = parameterName;
         return this;
     }
@@ -44,7 +46,7 @@ public abstract class AddParameterSubscriptionDTO {
         return eventName;
     }
 
-    public AddParameterSubscriptionDTO setEventName(String eventName) {
+    public UpdateParameterSubscriptionDTO setEventName(String eventName) {
         this.eventName = eventName;
         return this;
     }
@@ -53,7 +55,7 @@ public abstract class AddParameterSubscriptionDTO {
         return domainAppName;
     }
 
-    public AddParameterSubscriptionDTO setDomainNameApp(String domainAppName) {
+    public UpdateParameterSubscriptionDTO setDomainNameApp(String domainAppName) {
         this.domainAppName = domainAppName;
         return this;
     }
