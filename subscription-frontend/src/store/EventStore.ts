@@ -11,6 +11,8 @@ export interface IEvent {
 class EventStore {
     events: IEvent[] = [];
 
+    currentEventName = "";
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -34,6 +36,10 @@ class EventStore {
 
     public getEvents() {
         return this.events;
+    }
+
+    public setCurrentEventName = (eventName: string) => {
+        this.currentEventName = eventName;
     }
 }
 

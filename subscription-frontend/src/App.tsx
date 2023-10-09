@@ -11,13 +11,14 @@ import eventSubscriptionStore from "./store/EventSubscriptionStore";
 function App() {
   const {  events } = eventStore;
 
-  const { services, currentServiceName } = serviceStore;
-
-  const { cleanParameters } = parameterStore;
+  const { services } = serviceStore;
 
     useEffect(() => {
-        cleanParameters();
-    }, [currentServiceName]);
+        if (services.length > 0) {
+            serviceStore.setCurrentServiceName(services[0].name);
+            eventStore.getEventsFromServer(services[0].name);
+        }
+    }, [services]);
 
   return (
       <div className="d-flex">

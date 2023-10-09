@@ -18,7 +18,7 @@ export enum InputType {
 }
 
 class ParameterStore {
-    parameters: Record<string, IParameter[]> = {};
+    parameters: IParameter[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -33,16 +33,12 @@ class ParameterStore {
         const { data } = await axios.get(getResourcePath("/api/parameters"), {params: params});
 
         if (Array.isArray(data)) {
-            this.setParameters(eventName, data);
+            this.setParameters(data);
         }
     }
 
-    public cleanParameters = () => {
-        this.parameters = {};
-    }
-
-    private setParameters(eventName: string, parameters: IParameter[]) {
-        this.parameters[eventName] = parameters;
+    private setParameters(parameters: IParameter[]) {
+        this.parameters = parameters;
     }
 }
 
