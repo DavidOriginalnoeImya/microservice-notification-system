@@ -1,6 +1,6 @@
 import React, {FC, useEffect} from 'react';
 import eventStore, {IEvent} from "../store/EventStore";
-import {Col, Form, ListGroup, Row} from "react-bootstrap";
+import {Col, Form, Row} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import ParameterList from "./ParameterList";
 import parameterStore from "../store/ParameterStore";
@@ -10,14 +10,14 @@ interface IEventList {
     events: IEvent[];
 }
 
-const EventList: FC<IEventList> = ({ events }) => {
+const SubscriptionForm: FC<IEventList> = ({ events }) => {
     const componentStyle = {
         width: "50%",
         marginTop: "3%",
         marginLeft: "5%"
     }
 
-    const { setCurrentEventName } = eventStore;
+    const { setCurrentEventName, currentEventName, eventSubscriptions } = eventStore;
 
     const { initParameters, parameters } = parameterStore;
 
@@ -51,7 +51,7 @@ const EventList: FC<IEventList> = ({ events }) => {
                     <Form.Check
                         // className="me-2"
                         // onChange={onCheckboxClicked}
-                        // defaultChecked={eventSubscriptions.has(event.name)}
+                        defaultChecked={eventSubscriptions.has(currentEventName)}
                     />
                     <Form.Select
                         onChange={onEventChanged}
@@ -74,4 +74,4 @@ const EventList: FC<IEventList> = ({ events }) => {
     );
 };
 
-export default observer(EventList);
+export default observer(SubscriptionForm);
