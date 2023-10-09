@@ -15,6 +15,18 @@ class ParameterSubscriptionStore {
 
             const { data } = await axios.post(this.serverPath, body);
         }
+
+    public deleteParameterSubscription =
+        async (parameterName: string, eventName: string, serviceName: string) => {
+            const params = new URLSearchParams([
+                ["event-name", eventName],
+                ["service-name", serviceName]
+            ]);
+
+            const { data } = await axios.delete(
+                this.serverPath + `/${parameterName}`, {params: params}
+            );
+        }
 }
 
 const parameterSubscriptionStore = new ParameterSubscriptionStore();
