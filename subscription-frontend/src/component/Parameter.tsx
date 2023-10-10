@@ -1,7 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 import {InputType, IParameter} from "../store/ParameterStore";
 import MultiselectParameter from "./MultiselectParameter";
-import {Form} from "react-bootstrap";
+import {Col, Form, Row} from "react-bootstrap";
 import InputParameter from "./InputParameter";
 import SelectParameter from "./SelectParameter";
 import parameterSubscriptionStore from "../store/ParameterSubscriptionStore";
@@ -63,13 +63,13 @@ const Parameter: FC<IParameterComponent> = ({ parameter }) => {
                 className="me-2"
                 onChange={onCheckboxChanged}
             />
-            <div>
+            <Col>
                 { parameter.caption }
                 {
                     !isCheckboxParameter() &&
                     parameterComponents[parameter.inputType]
                 }
-            </div>
+            </Col>
         </div>
     );
 };

@@ -66,11 +66,9 @@ const SubscriptionForm: FC<ISubscriptionForm> = ({ events }) => {
                         }
                     </Form.Select>
                 </Row>
-                <Col className="mt-3 ms-4">
-                    <ParameterList
-                        parameters={parameters}
-                    />
-                </Col>
+                <ParameterList
+                    parameters={parameters}
+                />
             </Col>
         </Form>
     );
