@@ -1,17 +1,17 @@
 import React, {FC} from 'react';
-import Select from "react-select";
-import parameter, {IParameterComponent} from "./Parameter";
-import getSelectOptions from "../utils/SelectOptionsConverters";
+import Select, {MultiValue} from "react-select";
+import {IUpdatableParameterComponent} from "./Parameter";
+import getSelectOptions from "../utils/getSelectOptions";
+import parameterSubscriptionStore from "../store/ParameterSubscriptionStore";
+import getSelectValues from "../utils/getSelectValues";
 
-const MultiselectParameter: FC<IParameterComponent> = ({ parameter }) => {
+const MultiselectParameter: FC<IUpdatableParameterComponent> = ({ parameter, onValueChange }) => {
     return (
-        //<div>
-          //  { parameter.caption }
-            <Select
-                options={getSelectOptions(parameter.options)}
-                isMulti={true}
-            />
-        //</div>
+        <Select
+            options={getSelectOptions(parameter.options)}
+            isMulti={true}
+            onChange={(newValues) => onValueChange(getSelectValues(newValues))}
+        />
     );
 };
 

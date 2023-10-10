@@ -1,5 +1,15 @@
 import axios from "axios";
 import getSubscriptionPath from "../utils/getSubscriptionPath";
+import {InputType} from "./ParameterStore";
+
+type ParameterValue = string | string[];
+
+export interface IParameterInfo {
+    parameterName: string;
+    eventName: string;
+    serviceName: string;
+    inputType?: InputType;
+}
 
 class ParameterSubscriptionStore {
     private serverPath = getSubscriptionPath("/api/parameter-subs");
@@ -14,6 +24,19 @@ class ParameterSubscriptionStore {
             }
 
             const { data } = await axios.post(this.serverPath, body);
+        }
+
+    public updateParameterSubscription =
+        async (parameterInfo: IParameterInfo, newValue: ParameterValue) => {
+            const body = {
+                parameterName: parameterInfo.parameterName,
+                eventName: parameterInfo.eventName,
+                domainAppName: parameterInfo.serviceName,
+                inputType: parameterInfo.inputType,
+                value: newValue,
+            };
+
+            const { data } = await axios.put(this.serverPath, body);
         }
 
     public deleteParameterSubscription =

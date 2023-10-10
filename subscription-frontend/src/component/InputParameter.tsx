@@ -1,12 +1,14 @@
 import React, {FC} from 'react';
 import {Form} from "react-bootstrap";
-import {IParameterComponent} from "./Parameter";
+import {IUpdatableParameterComponent} from "./Parameter";
 
-const InputParameter = () => {//: FC<IParameterComponent> = ({ parameter }) => {
+const InputParameter: FC<IUpdatableParameterComponent> = ({  onValueChange }) => {
     return (
-        //<div>
-            <Form.Control type="text" placeholder="Normal text" />
-        //</div>
+        <Form.Control
+            type="text"
+            placeholder="Enter value..."
+            onBlur={event => onValueChange(event.target.value)}
+        />
     );
 };
 

@@ -7,22 +7,42 @@ import SelectParameter from "./SelectParameter";
 import parameterSubscriptionStore from "../store/ParameterSubscriptionStore";
 import eventStore from "../store/EventStore";
 import serviceStore from "../store/ServiceStore";
+import getSelectValues from "../utils/getSelectValues";
 
 export interface IParameterComponent {
     parameter: IParameter
 }
 
-const Parameter: FC<IParameterComponent> = ({ parameter }) => {
-    const parameterComponents: Record<InputType, ReactNode> = {
-        MULTISELECT: <MultiselectParameter parameter={parameter}/>,
-        INPUT: <InputParameter/>,
-        SELECT: <SelectParameter parameter={parameter}/>,
-        CHECKBOX: null
-    }
+type ParameterValue = string | string[];
 
+export interface IUpdatableParameterComponent extends IParameterComponent {
+    onValueChange(value: ParameterValue): void;
+}
+
+const Parameter: FC<IParameterComponent> = ({ parameter }) => {
     const { currentEventName } = eventStore;
 
     const { currentServiceName } = serviceStore;
+
+    const { updateParameterSubscription } = parameterSubscriptionStore;
+
+    const onValueChange = (newValue: string | string[]) => {
+        const parameterInfo = {
+            parameterName: parameter.name,
+            eventName: currentEventName,
+            serviceName: currentServiceName,
+            inputType: parameter.inputType
+        };
+
+        updateParameterSubscription(parameterInfo, newValue);
+    }
+
+    const parameterComponents: Record<InputType, ReactNode> = {
+        MULTISELECT: <MultiselectParameter parameter={parameter} onValueChange={onValueChange}/>,
+        INPUT: <InputParameter parameter={parameter} onValueChange={onValueChange}/>,
+        SELECT: <SelectParameter parameter={parameter} onValueChange={onValueChange}/>,
+        CHECKBOX: null
+    }
 
     const { addParameterSubscription, deleteParameterSubscription } = parameterSubscriptionStore;
 
