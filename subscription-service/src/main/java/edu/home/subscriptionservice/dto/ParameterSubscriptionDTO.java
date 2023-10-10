@@ -1,11 +1,15 @@
 package edu.home.subscriptionservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ParameterSubscriptionDTO {
 
     private String parameterName;
 
+    @JsonIgnore
     private String eventName;
 
+    @JsonIgnore
     private String serviceName;
 
     public String getParameterName() {

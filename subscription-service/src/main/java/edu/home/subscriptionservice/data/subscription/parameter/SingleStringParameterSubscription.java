@@ -3,6 +3,7 @@ package edu.home.subscriptionservice.data.subscription.parameter;
 import edu.home.subscriptionservice.data.parameter.Parameter;
 import edu.home.subscriptionservice.data.user.User;
 import edu.home.subscriptionservice.dto.ParameterSubscriptionDTO;
+import edu.home.subscriptionservice.dto.SingleStringParameterSubscriptionDTO;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -23,7 +24,9 @@ public class SingleStringParameterSubscription extends ParameterSubscription {
 
     @Override
     public ParameterSubscriptionDTO toDTO() {
-        return null;
+        return new SingleStringParameterSubscriptionDTO()
+                .setValue(value)
+                .setParameterName(getParameterName());
     }
 
     public String getValue() {
