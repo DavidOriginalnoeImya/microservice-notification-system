@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import './App.css';
 import SubscriptionForm from "./component/SubscriptionForm";
 import eventStore from "./store/EventStore";
 import serviceStore from "./store/ServiceStore";

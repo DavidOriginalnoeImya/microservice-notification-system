@@ -2,16 +2,13 @@ import {makeAutoObservable, observable} from "mobx";
 import axios from "axios";
 import getResourcePath from "../utils/ServerPathCreator";
 import getSubscriptionPath from "../utils/getSubscriptionPath";
+import {HttpConstant} from "../constant/HttpConstant";
 
 
 export interface IEvent {
     name: string;
     caption: string;
-}
-
-interface IEventSubscription {
-    eventName: string;
-    eventService: string;
+    checked: boolean;
 }
 
 class EventStore {
@@ -19,9 +16,7 @@ class EventStore {
 
     events: IEvent[] = [];
 
-    currentEventName = "";
-
-    eventSubscriptions = new Set<string>();
+    currentEvent: IEvent = {} as IEvent;
 
     constructor() {
         makeAutoObservable(this);
@@ -30,22 +25,30 @@ class EventStore {
     public initEvents = async (serviceName: string) => {
         const params = new URLSearchParams([["service-name", serviceName]]);
 
-        const {data} = await axios.get<IEvent[]>(
-            getResourcePath("/api/events"),
-            { params }
-        );
+        const events = (await axios.get<IEvent[]>(
+            getResourcePath("/api/events"), {params: params}
+        )).data;
 
-        if (Array.isArray(data)) {
-            this.setEvents(data);
+        if (Array.isArray(events)) {
+            const { data } = await this.getEventSubscriptions(serviceName);
+
+            const eventSubscriptions = new Set<string>(data.map(es => es.eventName));
+
+            events.forEach(
+                (event) => event.checked = eventSubscriptions.has(event.name)
+            );
+
+            this.setEvents(events);
         }
-
-        await this.initEventSubscriptions(serviceName);
     }
 
-    public addEventSubscriptions = async (eventName: string, serviceName: string) => {
+    public addEventSubscriptions = (eventName: string, serviceName: string) => {
         const body = {eventName: eventName, serviceName: serviceName};
 
-        const { data } = await axios.post(this.subscriptionPath, body);
+        axios.post(this.subscriptionPath, body)
+            .then((response) => response.status === HttpConstant.HTTP_CREATED)
+            .then((checked) => this.updateEventSubscriptions(eventName, checked))
+            .catch(() => alert("Не удалось подписаться на событие"));
     }
 
     public delEventSubscription = async (eventName: string, serviceName: string) => {
@@ -54,21 +57,10 @@ class EventStore {
             ["event-name", eventName]
         ]);
 
-        const { data } = await axios.delete(this.subscriptionPath, {params: params});
-    }
-
-    private initEventSubscriptions = async (serviceName: string) => {
-        const params = new URLSearchParams([
-            ["service-name", serviceName]
-        ]);
-
-        const { data } = await axios.get<IEventSubscription[]>(
-            this.subscriptionPath, {params: params}
-        );
-
-        if (Array.isArray(data)) {
-            this.setEventSubscriptions(data);
-        }
+        axios.delete(this.subscriptionPath, {params: params})
+            .then((response) => response.status === HttpConstant.HTTP_OK)
+            .then((checked) => this.updateEventSubscriptions(eventName, !checked))
+            .catch(() => alert("Не удалось отписаться от события"));
     }
 
     public setEvents(events: IEvent[]) {
@@ -79,16 +71,32 @@ class EventStore {
         return this.events;
     }
 
-    public setCurrentEventName = (eventName: string) => {
-        this.currentEventName = eventName;
+    public getEventByName = (eventName: string) => {
+        return this.events.find(event => event.name === eventName);
+    }
+    
+    public getEventByCaption = (eventCaption: string) => {
+        return this.events.find(event => event.caption === eventCaption);
     }
 
-    private setEventSubscriptions(eventSubscriptions: IEventSubscription[]) {
-        this.eventSubscriptions = new Set<string>(
-            eventSubscriptions.map(
-                eventSub => eventSub.eventName
-            )
-        );
+    public setCurrentEvent = (event: IEvent) => {
+        this.currentEvent = event;
+    }
+
+    private updateEventSubscriptions = (eventName: string, checked: boolean) => {
+        this.events.forEach((event) => {
+            if (event.name === eventName) {
+                event.checked = checked;
+            }
+        })
+    }
+
+    private getEventSubscriptions = (serviceName: string) => {
+        const params = new URLSearchParams([
+            ["service-name", serviceName]
+        ]);
+
+        return axios.get<{eventName: string}[]>(this.subscriptionPath, {params: params});
     }
 }
 

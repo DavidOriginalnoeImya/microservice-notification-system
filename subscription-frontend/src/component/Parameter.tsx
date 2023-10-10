@@ -20,7 +20,7 @@ export interface IUpdatableParameterComponent extends IParameterComponent {
 }
 
 const Parameter: FC<IParameterComponent> = ({ parameter }) => {
-    const { currentEventName } = eventStore;
+    const { currentEvent } = eventStore;
 
     const { currentServiceName } = serviceStore;
 
@@ -29,7 +29,7 @@ const Parameter: FC<IParameterComponent> = ({ parameter }) => {
     const onValueChange = (newValue: string | string[]) => {
         const parameterInfo = {
             parameterName: parameter.name,
-            eventName: currentEventName,
+            eventName: currentEvent.name,
             serviceName: currentServiceName,
             inputType: parameter.inputType
         };
@@ -52,12 +52,13 @@ const Parameter: FC<IParameterComponent> = ({ parameter }) => {
 
     const onCheckboxChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation();
-        e.target.checked ? addParameterSubscription(parameter.name, currentEventName, currentServiceName) :
-            deleteParameterSubscription(parameter.name, currentEventName, currentServiceName);
+        e.target.checked ?
+            addParameterSubscription(parameter.name, currentEvent.name, currentServiceName) :
+            deleteParameterSubscription(parameter.name, currentEvent.name, currentServiceName);
     }
 
     return (
-        <div className="d-flex">
+        <div className="d-flex mb-3">
             <Form.Check
                 className="me-2"
                 onChange={onCheckboxChanged}

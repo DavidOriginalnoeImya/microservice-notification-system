@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import eventStore, {IEvent} from "../store/EventStore";
 import {Col, Form, Row} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
@@ -6,52 +6,52 @@ import ParameterList from "./ParameterList";
 import parameterStore from "../store/ParameterStore";
 import serviceStore from "../store/ServiceStore";
 
-interface IEventList {
+interface ISubscriptionForm {
     events: IEvent[];
 }
 
-const SubscriptionForm: FC<IEventList> = ({ events }) => {
+const SubscriptionForm: FC<ISubscriptionForm> = ({ events }) => {
     const componentStyle = {
         width: "50%",
         marginTop: "3%",
         marginLeft: "5%"
     }
 
-    const { setCurrentEventName, currentEventName, eventSubscriptions } = eventStore;
-
     const { initParameters, parameters } = parameterStore;
+
+    const { currentEvent } = eventStore;
 
     const { currentServiceName } = serviceStore;
 
     useEffect(() => {
         if (events.length > 0) {
             initParameters(events[0].name, currentServiceName);
-            setCurrentEventName(events[0].name);
+            eventStore.setCurrentEvent(events[0]);
         }
     }, [events]);
 
-    const getEventNameByCaption = (eventCaption: string) => {
-        return events
-            .find(event => event.caption === eventCaption)!
-            .name;
+    const onEventChanged = (e: ChangeEvent<HTMLSelectElement>) => {
+        e.stopPropagation();
+        const currentEvent = eventStore.getEventByCaption(e.target.value)!;
+        initParameters(currentEvent.name, currentServiceName);
+        eventStore.setCurrentEvent(currentEvent);
     }
 
-    const onEventChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const onEventChecked = (e: ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation();
-
-        const currentEventName = getEventNameByCaption(e.target.value);
-        initParameters(currentEventName, currentServiceName);
-        setCurrentEventName(currentEventName);
+        e.target.checked ?
+            eventStore.addEventSubscriptions(currentEvent.name, currentServiceName) :
+            eventStore.delEventSubscription(currentEvent.name, currentServiceName);
     }
 
     return (
         <Form style={componentStyle}>
             <Col>
-                <Row>
+                <Row className="flex-nowrap">
                     <Form.Check
-                        // className="me-2"
-                        // onChange={onCheckboxClicked}
-                        defaultChecked={eventSubscriptions.has(currentEventName)}
+                        onChange={onEventChecked}
+                        checked={currentEvent.checked}
+                        className="col-auto"
                     />
                     <Form.Select
                         onChange={onEventChanged}
@@ -59,16 +59,18 @@ const SubscriptionForm: FC<IEventList> = ({ events }) => {
                         {
                             events.map(
                                 event =>
-                                    <option>
+                                    <option key={currentServiceName + event.name}>
                                         {event.caption}
                                     </option>
                             )
                         }
                     </Form.Select>
                 </Row>
-                <ParameterList
-                    parameters={parameters}
-                />
+                <Col className="mt-3 ms-4">
+                    <ParameterList
+                        parameters={parameters}
+                    />
+                </Col>
             </Col>
         </Form>
     );
