@@ -90,8 +90,7 @@ public class ParameterSubscriptionService {
         ParameterSubscription ps = ParameterSubscription
                 .getParameterSubscription(user, parameter, addParameterSubscriptionDTO);
 
-        return DTOConverter
-                .convertToDTO(parameterSubscriptionRepository.save(ps));
+        return parameterSubscriptionRepository.save(ps).toDTO();
     }
 
     @Transactional

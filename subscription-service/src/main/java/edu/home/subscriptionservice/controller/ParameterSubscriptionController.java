@@ -127,7 +127,7 @@ public class ParameterSubscriptionController {
                                 parameterSubscriptionDTO.getServiceName()
                         ).toString()
                     )
-                    .build();
+                    .body(parameterSubscriptionDTO);
         }
         catch (EntityDoesntExistException e) {
             return ResponseEntity
