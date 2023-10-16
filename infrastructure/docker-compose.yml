@@ -1,5 +1,9 @@
 version: "2"
 services:
+  subscription-frontend:
+    image: subscription-frontend
+    ports:
+      - "80:80"
   subscription-service:
     image: subscription-service
     ports:
