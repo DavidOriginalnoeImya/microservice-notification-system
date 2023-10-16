@@ -1,22 +1,26 @@
 import React, {FC, ReactNode} from 'react';
-import {InputType, IParameter} from "../store/ParameterStore";
+import parameterStore, {
+    IMultiStringParameter,
+    InputType,
+    IValueParameter,
+    ISingleStringParameter
+} from "../store/ParameterStore";
 import MultiselectParameter from "./MultiselectParameter";
-import {Col, Form, Row} from "react-bootstrap";
+import {Col, Form} from "react-bootstrap";
 import InputParameter from "./InputParameter";
 import SelectParameter from "./SelectParameter";
-import parameterSubscriptionStore from "../store/ParameterSubscriptionStore";
 import eventStore from "../store/EventStore";
 import serviceStore from "../store/ServiceStore";
-import getSelectValues from "../utils/getSelectValues";
+import {observer} from "mobx-react-lite";
 
 export interface IParameterComponent {
-    parameter: IParameter
+    parameter: IValueParameter
 }
 
-type ParameterValue = string | string[];
+type SubscriptionValue = string | string[];
 
-export interface IUpdatableParameterComponent extends IParameterComponent {
-    onValueChange(value: ParameterValue): void;
+export interface IUpdatableParameterComponent {
+    onValueChange(value: SubscriptionValue): void;
 }
 
 const Parameter: FC<IParameterComponent> = ({ parameter }) => {
@@ -24,37 +28,37 @@ const Parameter: FC<IParameterComponent> = ({ parameter }) => {
 
     const { currentServiceName } = serviceStore;
 
-    const { updateParameterSubscription } = parameterSubscriptionStore;
-
-    const onValueChange = (newValue: string | string[]) => {
+    const onValueChange = (newValue: SubscriptionValue) => {
         const parameterInfo = {
-            parameterName: parameter.name,
-            eventName: currentEvent.name,
-            serviceName: currentServiceName,
-            inputType: parameter.inputType
+            parameterName: parameter.name, eventName: currentEvent.name,
+            serviceName: currentServiceName, inputType: parameter.inputType
         };
 
-        updateParameterSubscription(parameterInfo, newValue);
+        parameterStore.updateParameterSubscription(parameterInfo, newValue);
     }
 
     const parameterComponents: Record<InputType, ReactNode> = {
-        MULTISELECT: <MultiselectParameter parameter={parameter} onValueChange={onValueChange}/>,
-        INPUT: <InputParameter parameter={parameter} onValueChange={onValueChange}/>,
-        SELECT: <SelectParameter parameter={parameter} onValueChange={onValueChange}/>,
+        MULTISELECT: <MultiselectParameter parameter={parameter as IMultiStringParameter} onValueChange={onValueChange}/>,
+        INPUT: <InputParameter parameter={parameter as ISingleStringParameter} onValueChange={onValueChange}/>,
+        SELECT: <SelectParameter parameter={parameter as ISingleStringParameter} onValueChange={onValueChange}/>,
         CHECKBOX: null
     }
-
-    const { addParameterSubscription, deleteParameterSubscription } = parameterSubscriptionStore;
-
+    
     const isCheckboxParameter = () => {
         return parameter.inputType === InputType.CHECKBOX;
     }
 
     const onCheckboxChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation();
-        e.target.checked ?
-            addParameterSubscription(parameter.name, currentEvent.name, currentServiceName) :
-            deleteParameterSubscription(parameter.name, currentEvent.name, currentServiceName);
+
+        const parameterInfo = {
+            parameterName: parameter.name,
+            eventName: currentEvent.name,
+            serviceName: currentServiceName
+        };
+
+        e.target.checked ? parameterStore.addParameterSubscription(parameterInfo)
+                         : parameterStore.deleteParameterSubscription(parameterInfo);
     }
 
     return (
@@ -62,6 +66,7 @@ const Parameter: FC<IParameterComponent> = ({ parameter }) => {
             <Form.Check
                 className="me-2"
                 onChange={onCheckboxChanged}
+                checked={parameter.checked}
             />
             <Col>
                 { parameter.caption }
@@ -74,4 +79,4 @@ const Parameter: FC<IParameterComponent> = ({ parameter }) => {
     );
 };
 
-export default Parameter;
+export default observer(Parameter);

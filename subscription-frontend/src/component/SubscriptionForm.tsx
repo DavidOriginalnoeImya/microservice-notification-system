@@ -17,7 +17,7 @@ const SubscriptionForm: FC<ISubscriptionForm> = ({ events }) => {
         marginLeft: "5%"
     }
 
-    const { initParameters, parameters } = parameterStore;
+    const { initParameterStore, parameters } = parameterStore;
 
     const { currentEvent } = eventStore;
 
@@ -25,7 +25,7 @@ const SubscriptionForm: FC<ISubscriptionForm> = ({ events }) => {
 
     useEffect(() => {
         if (events.length > 0) {
-            initParameters(events[0].name, currentServiceName);
+            initParameterStore(events[0].name, currentServiceName);
             eventStore.setCurrentEvent(events[0]);
         }
     }, [events]);
@@ -33,7 +33,7 @@ const SubscriptionForm: FC<ISubscriptionForm> = ({ events }) => {
     const onEventChanged = (e: ChangeEvent<HTMLSelectElement>) => {
         e.stopPropagation();
         const currentEvent = eventStore.getEventByCaption(e.target.value)!;
-        initParameters(currentEvent.name, currentServiceName);
+        initParameterStore(currentEvent.name, currentServiceName);
         eventStore.setCurrentEvent(currentEvent);
     }
 

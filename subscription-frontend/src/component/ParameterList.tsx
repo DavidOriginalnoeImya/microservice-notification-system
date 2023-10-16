@@ -1,12 +1,12 @@
 import React, {FC} from 'react';
 import {Col, Form} from "react-bootstrap";
-import {IParameter} from "../store/ParameterStore";
+import {IValueParameter} from "../store/ParameterStore";
 import Parameter from "./Parameter";
 import eventStore from "../store/EventStore";
 import serviceStore from "../store/ServiceStore";
 
 interface IParameterList {
-    parameters: IParameter[];
+    parameters: IValueParameter[];
 }
 
 const ParameterList: FC<IParameterList> = ({ parameters }) => {

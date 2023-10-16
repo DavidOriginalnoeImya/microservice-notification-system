@@ -1,6 +1,6 @@
 
 const getResourcePath = (pathPostfix: string) => {
-    return "http://localhost:8085" + pathPostfix;
+    return "http://registration-service:8080" + pathPostfix;
 }
 
 export default getResourcePath;

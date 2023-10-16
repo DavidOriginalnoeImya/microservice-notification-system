@@ -1,13 +1,21 @@
 import React, {FC} from 'react';
-import Select, {MultiValue} from "react-select";
+import Select from "react-select";
 import {IUpdatableParameterComponent} from "./Parameter";
 import getSelectOptions from "../utils/getSelectOptions";
-import parameterSubscriptionStore from "../store/ParameterSubscriptionStore";
 import getSelectValues from "../utils/getSelectValues";
+import {IMultiStringParameter} from "../store/ParameterStore";
+import {observer} from "mobx-react-lite";
 
-const MultiselectParameter: FC<IUpdatableParameterComponent> = ({ parameter, onValueChange }) => {
+export interface IMultiselectParameter extends IUpdatableParameterComponent{
+    parameter: IMultiStringParameter;
+}
+
+const MultiselectParameter: FC<IMultiselectParameter> = ({ parameter, onValueChange }) => {
+    console.log(parameter.value)
+
     return (
         <Select
+            value={getSelectOptions(parameter.value)}
             options={getSelectOptions(parameter.options)}
             isMulti={true}
             onChange={(newValues) => onValueChange(getSelectValues(newValues))}
@@ -15,4 +23,4 @@ const MultiselectParameter: FC<IUpdatableParameterComponent> = ({ parameter, onV
     );
 };
 
-export default MultiselectParameter;
+export default observer(MultiselectParameter);
