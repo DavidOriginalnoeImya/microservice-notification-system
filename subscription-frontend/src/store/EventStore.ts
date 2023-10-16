@@ -1,6 +1,6 @@
 import {makeAutoObservable, observable} from "mobx";
 import axios from "axios";
-import getResourcePath from "../utils/ServerPathCreator";
+import getResourcePath from "../utils/getResourcePath";
 import getSubscriptionPath from "../utils/getSubscriptionPath";
 import {HttpConstant} from "../constant/HttpConstant";
 

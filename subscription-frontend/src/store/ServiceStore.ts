@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import axios from "axios";
-import getResourcePath from "../utils/ServerPathCreator";
+import getResourcePath from "../utils/getResourcePath";
 
 export interface IService {
     name: string;

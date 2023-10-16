@@ -1,6 +1,6 @@
 
 const getSubscriptionPath = (pathPostfix: string) => {
-    return "http://subscription-service:8080" + pathPostfix;
+    return "http://localhost:8086" + pathPostfix;
 }
 
 export default getSubscriptionPath;
