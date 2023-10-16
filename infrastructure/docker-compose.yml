@@ -3,7 +3,7 @@ services:
   subscription-frontend:
     image: subscription-frontend
     ports:
-      - "80:80"
+      - "3000:80"
   subscription-service:
     image: subscription-service
     ports:
