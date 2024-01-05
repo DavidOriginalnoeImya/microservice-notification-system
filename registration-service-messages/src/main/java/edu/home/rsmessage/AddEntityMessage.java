@@ -8,8 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes({
     @JsonSubTypes.Type(AddServiceMessage.class),
-    @JsonSubTypes.Type(AddEventMessage.class),
-    @JsonSubTypes.Type(AddParameterMessage.class)
+    @JsonSubTypes.Type(AddEventMessage.class)
 })
 @JsonDeserialize(builder = AddEntityMessage.Builder.class)
 public abstract class AddEntityMessage {
