@@ -3,6 +3,7 @@ package ge.davab.subscriptionservice.subscription.service;
 import edu.home.notificationsystem.exception.EntityDoesntExistException;
 import ge.davab.subscriptionservice.registration.data.event.Event;
 import ge.davab.subscriptionservice.registration.data.event.EventRepository;
+import ge.davab.subscriptionservice.registration.service.EventService;
 import ge.davab.subscriptionservice.subscription.data.event.EventSubscription;
 import ge.davab.subscriptionservice.subscription.data.event.EventSubscriptionRepository;
 import ge.davab.subscriptionservice.subscription.data.user.User;
@@ -21,32 +22,32 @@ public class EventSubscriptionService {
 
     private final EventSubscriptionRepository eventSubscriptionRepository;
 
-    private final EventRepository eventRepository;
+    private final EventService eventService;
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     public EventSubscriptionService(
             EventSubscriptionRepository eventSubscriptionRepository,
-            EventRepository eventRepository,
-            UserRepository userRepository
+            EventService eventService,
+            UserService userService
     ) {
         this.eventSubscriptionRepository = eventSubscriptionRepository;
-        this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
+        this.eventService = eventService;
+        this.userService = userService;
     }
 
     public EventSubscriptionDTO getEventSubscription(
             String userGuid, String eventName,
             String domainAppName
     ) {
-        Event event = getEvent(eventName, domainAppName);
+        Event event = eventService.getEvent(eventName, domainAppName);
         return getEventSubscription(userGuid, event).toDTO();
     }
 
     public EventSubscriptionDTO addEventSubscription(AddEventSubscriptionDTO addEventSubscriptionDTO) {
-        User user = getUser(addEventSubscriptionDTO.getUserGuid());
+        User user = userService.getUser(addEventSubscriptionDTO.getUserGuid());
 
-        Event event = getEvent(
+        Event event = eventService.getEvent(
                 addEventSubscriptionDTO.getEventName(),
                 addEventSubscriptionDTO.getServiceName()
         );
@@ -60,7 +61,7 @@ public class EventSubscriptionService {
     public EventSubscriptionDTO deleteEventSubscription(
             String userGuid, String eventName, String domainAppName
     ) {
-        Event event = getEvent(eventName, domainAppName);
+        Event event = eventService.getEvent(eventName, domainAppName);
 
         EventSubscription eventSubscription = getEventSubscription(userGuid, event);
         eventSubscriptionRepository.delete(eventSubscription);
@@ -79,17 +80,5 @@ public class EventSubscriptionService {
         return eventSubscriptionRepository
                 .getByEventAndUserGuid(event, userGuid)
                 .orElseThrow(() -> new EntityDoesntExistException("Event subscription doesn't exist"));
-    }
-
-    private Event getEvent(String eventName, String domainAppName) {
-        return eventRepository
-                .getByNameAndDomainAppName(eventName, domainAppName)
-                .orElseThrow(() -> new EntityDoesntExistException("Event doesn't exist"));
-    }
-
-    private User getUser(String userGuid) {
-        return userRepository
-                .getByGuid(userGuid)
-                .orElseThrow(() -> new EntityDoesntExistException("User doesn't exist"));
     }
 }
