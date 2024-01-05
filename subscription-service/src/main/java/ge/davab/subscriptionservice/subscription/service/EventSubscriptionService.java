@@ -8,7 +8,6 @@ import ge.davab.subscriptionservice.subscription.data.event.EventSubscriptionRep
 import ge.davab.subscriptionservice.subscription.data.user.User;
 import ge.davab.subscriptionservice.subscription.data.user.UserRepository;
 import ge.davab.subscriptionservice.subscription.dto.AddEventSubscriptionDTO;
-import ge.davab.subscriptionservice.registration.dto.DTOConverter;
 import ge.davab.subscriptionservice.subscription.dto.EventSubscriptionDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class EventSubscriptionService {
 
     private final EventSubscriptionRepository eventSubscriptionRepository;
@@ -35,19 +35,15 @@ public class EventSubscriptionService {
         this.userRepository = userRepository;
     }
 
-    @Transactional
     public EventSubscriptionDTO getEventSubscription(
             String userGuid, String eventName,
             String domainAppName
     ) {
         Event event = getEvent(eventName, domainAppName);
-        return DTOConverter.convertToDTO(getEventSubscription(userGuid, event));
+        return getEventSubscription(userGuid, event).toDTO();
     }
 
-    @Transactional
-    public EventSubscriptionDTO addEventSubscription(
-            AddEventSubscriptionDTO addEventSubscriptionDTO
-    ) {
+    public EventSubscriptionDTO addEventSubscription(AddEventSubscriptionDTO addEventSubscriptionDTO) {
         User user = getUser(addEventSubscriptionDTO.getUserGuid());
 
         Event event = getEvent(
@@ -56,13 +52,11 @@ public class EventSubscriptionService {
         );
 
         EventSubscription eventSubscription = new EventSubscription(event, user);
-
-        return DTOConverter.convertToDTO(
-                eventSubscriptionRepository.save(eventSubscription)
-        );
+        return eventSubscriptionRepository
+                .save(eventSubscription)
+                .toDTO();
     }
 
-    @Transactional
     public EventSubscriptionDTO deleteEventSubscription(
             String userGuid, String eventName, String domainAppName
     ) {
@@ -71,14 +65,13 @@ public class EventSubscriptionService {
         EventSubscription eventSubscription = getEventSubscription(userGuid, event);
         eventSubscriptionRepository.delete(eventSubscription);
 
-        return DTOConverter.convertToDTO(eventSubscription);
+        return eventSubscription.toDTO();
     }
 
-    @Transactional
     public List<EventSubscriptionDTO> getEventSubscriptions(String userGuid, String domainAppName) {
         return eventSubscriptionRepository
                 .getByUserGuidAndDomainAppName(userGuid, domainAppName)
-                .stream().map(DTOConverter::convertToDTO)
+                .stream().map(EventSubscription::toDTO)
                 .collect(Collectors.toList());
     }
 

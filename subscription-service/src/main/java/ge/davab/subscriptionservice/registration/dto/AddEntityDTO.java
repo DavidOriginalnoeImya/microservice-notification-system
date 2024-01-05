@@ -1,24 +1,14 @@
 package ge.davab.subscriptionservice.registration.dto;
 
-public class AddEntityDTO {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+public abstract class AddEntityDTO<Entity> {
 
     private String entityName;
 
     private String entityCaption;
 
-    public String getEntityName() {
-        return entityName;
-    }
-
-    public void setEntityName(String entityName) {
-        this.entityName = entityName;
-    }
-
-    public String getEntityCaption() {
-        return entityCaption;
-    }
-
-    public void setEntityCaption(String entityCaption) {
-        this.entityCaption = entityCaption;
-    }
+    public abstract Entity toEntity();
 }

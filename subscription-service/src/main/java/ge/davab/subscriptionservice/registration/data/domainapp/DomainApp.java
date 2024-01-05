@@ -1,36 +1,26 @@
 package ge.davab.subscriptionservice.registration.data.domainapp;
 
+import ge.davab.subscriptionservice.registration.dto.DomainAppDTO;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "service")
+@Getter @Setter
 public class DomainApp {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     private String name;
 
     private String caption;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCaption() {
-        return caption;
-    }
-
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public DomainAppDTO toDTO() {
+        return new DomainAppDTO(getName(), getCaption());
     }
 }

@@ -2,6 +2,7 @@ package ge.davab.subscriptionservice.subscription.data.event;
 
 import ge.davab.subscriptionservice.registration.data.event.Event;
 import ge.davab.subscriptionservice.subscription.data.user.User;
+import ge.davab.subscriptionservice.subscription.dto.EventSubscriptionDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -40,5 +41,17 @@ public class EventSubscription {
 
     public String getDomainAppName() {
         return event.getServiceName();
+    }
+
+    public String getUserGuid() {
+        return user.getGuid();
+    }
+
+    public EventSubscriptionDTO toDTO() {
+        return new EventSubscriptionDTO(
+            getEventName(),
+            getDomainAppName(),
+            getUserGuid()
+        );
     }
 }

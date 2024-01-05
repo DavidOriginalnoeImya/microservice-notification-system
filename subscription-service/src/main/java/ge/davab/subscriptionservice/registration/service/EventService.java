@@ -5,7 +5,6 @@ import ge.davab.subscriptionservice.registration.data.domainapp.DomainAppReposit
 import ge.davab.subscriptionservice.registration.data.event.Event;
 import ge.davab.subscriptionservice.registration.data.event.EventRepository;
 import ge.davab.subscriptionservice.registration.dto.AddEventDTO;
-import ge.davab.subscriptionservice.registration.dto.DTOConverter;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,8 +28,8 @@ public class EventService implements EntityService<AddEventDTO> {
                 .findByName(addEventDTO.getEventServiceName())
                 .orElseThrow();
 
-        Event event = DTOConverter.convertFromDTO(addEventDTO);
-        event.setService(domainApp);
+        Event event = addEventDTO.toEntity();
+        event.setDomainApp(domainApp);
         eventRepository.save(event);
     }
 }

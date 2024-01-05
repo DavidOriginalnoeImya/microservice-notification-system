@@ -1,26 +1,16 @@
 package ge.davab.subscriptionservice.subscription.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor
 public class EventSubscriptionDTO {
 
     private String eventName;
 
     private String serviceName;
 
-    public String getEventName() {
-        return eventName;
-    }
-
-    public EventSubscriptionDTO setEventName(String eventName) {
-        this.eventName = eventName;
-        return this;
-    }
-
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public EventSubscriptionDTO setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-        return this;
-    }
+    private String userGuid;
 }
