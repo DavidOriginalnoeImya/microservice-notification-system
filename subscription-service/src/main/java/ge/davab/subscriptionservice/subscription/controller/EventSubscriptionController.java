@@ -19,8 +19,6 @@ public class EventSubscriptionController {
 
     private final String userGuid = "1234";
 
-    private final static int EVENT_SUB_DOESNT_EXIST = 224;
-
     private static final String EVENT_NAME_REQ_PARAM = "event-name";
 
     private static final String SERVICE_NAME_REQ_PARAM = "service-name";
@@ -31,20 +29,13 @@ public class EventSubscriptionController {
         this.eventSubscriptionService = eventSubscriptionService;
     }
 
-    @GetMapping("{event-name}")
-    public ResponseEntity<?> getEventSubscription(
+    @GetMapping("/{event-name}")
+    public ResponseEntity<EventSubscriptionDTO> getEventSubscription(
             @PathVariable(EVENT_NAME_REQ_PARAM) String eventName,
             @RequestParam(SERVICE_NAME_REQ_PARAM) String domainAppName
     ) {
-        try {
-            return ResponseEntity.ok(eventSubscriptionService
-                    .getEventSubscription(userGuid, eventName, domainAppName));
-        }
-        catch (EntityDoesntExistException e) {
-            return ResponseEntity
-                    .status(EVENT_SUB_DOESNT_EXIST)
-                    .body("Current user isn't subscribe to this event");
-        }
+        return ResponseEntity.ok(eventSubscriptionService
+                .getEventSubscription(userGuid, eventName, domainAppName));
     }
 
     @GetMapping
@@ -58,53 +49,46 @@ public class EventSubscriptionController {
                 .ok(eventSubscriptionsDTO);
     }
 
-    @PostMapping(consumes = "application/json")
-    public ResponseEntity<?> addEventSubscription(
+    @PostMapping
+    public ResponseEntity<EventSubscriptionDTO> addEventSubscription(
             HttpServletRequest httpRequest,
             @RequestBody AddEventSubscriptionDTO addEventSubscriptionDTO
     ) {
-        try {
-            EventSubscriptionDTO eventSubscriptionDTO = eventSubscriptionService
-                    .addEventSubscription(addEventSubscriptionDTO.setUserGuid(userGuid));
+        EventSubscriptionDTO eventSubscriptionDTO = eventSubscriptionService
+                .addEventSubscription(addEventSubscriptionDTO.setUserGuid(userGuid));
 
-            return ResponseEntity
-                    .created(
-                            new UriBuilder(httpRequest)
-                                    .setPathVariable(
-                                            EVENT_NAME_REQ_PARAM,
-                                            addEventSubscriptionDTO.getEventName()
-                                    )
-                                    .setPathVariable(
-                                            SERVICE_NAME_REQ_PARAM,
-                                            addEventSubscriptionDTO.getServiceName()
-                                    )
-                                    .build()
-                    )
-                    .body(eventSubscriptionDTO);
-        }
-        catch (EntityDoesntExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        return ResponseEntity
+                .created(
+                        new UriBuilder(httpRequest)
+                                .setPathVariable(
+                                        EVENT_NAME_REQ_PARAM,
+                                        addEventSubscriptionDTO.getEventName()
+                                )
+                                .setPathVariable(
+                                        SERVICE_NAME_REQ_PARAM,
+                                        addEventSubscriptionDTO.getServiceName()
+                                )
+                                .build()
+                )
+                .body(eventSubscriptionDTO);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteEventSubscription(
+    public ResponseEntity<EventSubscriptionDTO> deleteEventSubscription(
             @RequestParam("event-name") String eventName,
             @RequestParam("service-name") String domainAppName
     ) {
-        try {
-            EventSubscriptionDTO eventSubscriptionDTO = eventSubscriptionService
-                    .deleteEventSubscription(userGuid, eventName, domainAppName);
+        EventSubscriptionDTO eventSubscriptionDTO = eventSubscriptionService
+                .deleteEventSubscription(userGuid, eventName, domainAppName);
 
-            return ResponseEntity
-                    .ok(eventSubscriptionDTO);
-        }
-        catch (EntityDoesntExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        return ResponseEntity
+                .ok(eventSubscriptionDTO);
+    }
+
+    @ExceptionHandler(EntityDoesntExistException.class)
+    public ResponseEntity<String> handleEntityDoesntExistException(EntityDoesntExistException e) {
+        return ResponseEntity
+                .badRequest()
+                .body(e.getMessage());
     }
 }
