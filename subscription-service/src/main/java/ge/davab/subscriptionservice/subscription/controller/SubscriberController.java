@@ -1,6 +1,6 @@
 package ge.davab.subscriptionservice.subscription.controller;
 
-import ge.davab.subscriptionservice.subscription.data.user.UserRepository;
+import ge.davab.subscriptionservice.subscription.dto.UserDTO;
 import ge.davab.subscriptionservice.subscription.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +21,12 @@ public class SubscriberController {
     }
 
     @GetMapping
-    public ResponseEntity<List<String>> getUsersGuidByEventSubscription(
+    public ResponseEntity<List<UserDTO>> getUsersByEventSubscription(
         @RequestParam("event-name") String eventName,
         @RequestParam("service-name") String serviceName
     ) {
         return ResponseEntity.ok(
-                userService.getUsersGuidByEventSubscription(eventName, serviceName)
+                userService.getUsersByEventSubscription(eventName, serviceName)
         );
     }
 }

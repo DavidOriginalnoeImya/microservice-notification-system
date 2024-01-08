@@ -1,6 +1,7 @@
 package ge.davab.subscriptionservice.subscription.data.user;
 
 import ge.davab.subscriptionservice.subscription.data.event.EventSubscription;
+import ge.davab.subscriptionservice.subscription.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,4 +25,8 @@ public class User {
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "user")
     private Set<EventSubscription> eventSubscriptions = new HashSet<>();
+
+    public UserDTO toDTO() {
+        return new UserDTO(getGuid());
+    }
 }

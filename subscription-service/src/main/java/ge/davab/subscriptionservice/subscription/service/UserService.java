@@ -3,6 +3,7 @@ package ge.davab.subscriptionservice.subscription.service;
 import edu.home.notificationsystem.exception.EntityDoesntExistException;
 import ge.davab.subscriptionservice.subscription.data.user.User;
 import ge.davab.subscriptionservice.subscription.data.user.UserRepository;
+import ge.davab.subscriptionservice.subscription.dto.UserDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +26,10 @@ public class UserService {
                 .orElseThrow(() -> new EntityDoesntExistException("User doesn't exist"));
     }
 
-    public List<String> getUsersGuidByEventSubscription(String eventName, String serviceName) {
+    public List<UserDTO> getUsersByEventSubscription(String eventName, String serviceName) {
         return userRepository.getByEventSubscription(eventName, serviceName)
                 .stream()
-                .map(User::getGuid)
+                .map(User::toDTO)
                 .collect(Collectors.toList());
     }
 }
