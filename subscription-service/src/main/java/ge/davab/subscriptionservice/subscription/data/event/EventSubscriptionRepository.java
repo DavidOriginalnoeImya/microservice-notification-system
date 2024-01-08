@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface EventSubscriptionRepository extends JpaRepository<EventSubscription, Id> {
 
 
-    // check what sql is generated for
+    @Query("select es from EventSubscription es where es.event = ?1 and es.user.guid = ?2")
     Optional<EventSubscription> getByEventAndUserGuid(Event event, String userGuid);
 
     @Query("select es from EventSubscription es where es.user.guid = ?1 and es.event.domainApp.name = ?2")
