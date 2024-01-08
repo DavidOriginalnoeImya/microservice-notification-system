@@ -3,7 +3,7 @@ import Select from "react-select";
 import {IUpdatableParameterComponent} from "./Parameter";
 import getSelectOptions from "../utils/getSelectOptions";
 import getSelectValues from "../utils/getSelectValues";
-import {IMultiStringParameter} from "../store/ParameterStore";
+import {IMultiStringParameter} from "../stores/ParameterStore";
 import {observer} from "mobx-react-lite";
 
 export interface IMultiselectParameter extends IUpdatableParameterComponent{

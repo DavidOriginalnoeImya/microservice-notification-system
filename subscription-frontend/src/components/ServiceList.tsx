@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import {ListGroup, ListGroupItem} from "react-bootstrap";
-import serviceStore, {IService} from "../store/ServiceStore";
+import serviceStore, {IService} from "../stores/ServiceStore";
 import {observer} from "mobx-react-lite";
-import eventStore from "../store/EventStore";
+import eventStore from "../stores/EventStore";
 
 interface IServiceList {
     services: IService[];

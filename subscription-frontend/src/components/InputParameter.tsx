@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Form} from "react-bootstrap";
 import {IUpdatableParameterComponent} from "./Parameter";
-import {ISingleStringParameter} from "../store/ParameterStore";
+import {ISingleStringParameter} from "../stores/ParameterStore";
 import {observer} from "mobx-react-lite";
 
 interface IInputParameter extends IUpdatableParameterComponent {

@@ -1,10 +1,10 @@
 import React, {ChangeEvent, FC, useEffect, useState} from 'react';
-import eventStore, {IEvent} from "../store/EventStore";
+import eventStore, {IEvent} from "../stores/EventStore";
 import {Col, Form, Row} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import ParameterList from "./ParameterList";
-import parameterStore from "../store/ParameterStore";
-import serviceStore from "../store/ServiceStore";
+import parameterStore from "../stores/ParameterStore";
+import serviceStore from "../stores/ServiceStore";
 
 interface ISubscriptionForm {
     events: IEvent[];

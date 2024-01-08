@@ -4,13 +4,13 @@ import parameterStore, {
     InputType,
     IValueParameter,
     ISingleStringParameter
-} from "../store/ParameterStore";
+} from "../stores/ParameterStore";
 import MultiselectParameter from "./MultiselectParameter";
 import {Col, Form} from "react-bootstrap";
 import InputParameter from "./InputParameter";
 import SelectParameter from "./SelectParameter";
-import eventStore from "../store/EventStore";
-import serviceStore from "../store/ServiceStore";
+import eventStore from "../stores/EventStore";
+import serviceStore from "../stores/ServiceStore";
 import {observer} from "mobx-react-lite";
 
 export interface IParameterComponent {

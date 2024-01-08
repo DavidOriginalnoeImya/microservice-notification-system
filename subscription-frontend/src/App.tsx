@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
-import SubscriptionForm from "./component/SubscriptionForm";
-import eventStore from "./store/EventStore";
-import serviceStore from "./store/ServiceStore";
-import ServiceList from "./component/ServiceList";
+import SubscriptionForm from "./components/SubscriptionForm";
+import eventStore from "./stores/EventStore";
+import serviceStore from "./stores/ServiceStore";
+import ServiceList from "./components/ServiceList";
 import {observer} from "mobx-react-lite";
 
 function App() {

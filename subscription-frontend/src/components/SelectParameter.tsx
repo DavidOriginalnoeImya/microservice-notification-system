@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import Select from "react-select";
 import {IUpdatableParameterComponent} from "./Parameter";
 import getSelectOptions from "../utils/getSelectOptions";
-import {ISingleStringParameter} from "../store/ParameterStore";
+import {ISingleStringParameter} from "../stores/ParameterStore";
 import {observer} from "mobx-react-lite";
 
 interface ISelectParameter extends IUpdatableParameterComponent {

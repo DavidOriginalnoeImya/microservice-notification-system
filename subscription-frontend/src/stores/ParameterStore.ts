@@ -2,7 +2,7 @@ import {makeAutoObservable} from "mobx";
 import axios from "axios";
 import getResourcePath from "../utils/getResourcePath";
 import getSubscriptionPath from "../utils/getSubscriptionPath";
-import {HttpConstant} from "../constant/HttpConstant";
+import {HttpConstant} from "../constants/HttpConstant";
 
 interface IParameter {
     name: string;
