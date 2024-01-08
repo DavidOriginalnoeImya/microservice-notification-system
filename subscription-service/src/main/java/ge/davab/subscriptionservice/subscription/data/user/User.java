@@ -21,7 +21,7 @@ public class User {
 
     private String guid;
 
-    @OneToMany
     @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "user")
     private Set<EventSubscription> eventSubscriptions = new HashSet<>();
 }
