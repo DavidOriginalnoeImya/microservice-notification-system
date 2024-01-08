@@ -1,32 +1,27 @@
 package ge.davab.subscriptionservice.subscription.data.user;
 
+import ge.davab.subscriptionservice.subscription.data.event.EventSubscription;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "ns_user")
+@Table(name = "users")
+@Setter @Getter
 public class User {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     private String guid;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
+    @OneToMany
+    @Setter(AccessLevel.NONE)
+    private Set<EventSubscription> eventSubscriptions = new HashSet<>();
 }
