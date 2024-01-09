@@ -2,7 +2,7 @@ import {makeAutoObservable, observable} from "mobx";
 import axios from "axios";
 import getResourcePath from "../utils/getResourcePath";
 import getSubscriptionPath from "../utils/getSubscriptionPath";
-import {HttpConstant} from "../constants/HttpConstant";
+import {HttpStatus} from "../constants/HttpStatus";
 
 
 export interface IEvent {
@@ -16,28 +16,18 @@ class EventStore {
 
     events: IEvent[] = [];
 
-    currentEvent: IEvent = {} as IEvent;
-
     constructor() {
         makeAutoObservable(this);
     }
 
     public initEvents = async (serviceName: string) => {
         const params = new URLSearchParams([["service-name", serviceName]]);
-
-        const events = (await axios.get<IEvent[]>(
-            getResourcePath("/api/events"), {params: params}
-        )).data;
+        const events = (await axios.get<IEvent[]>(getResourcePath("/api/events"), {params: params})).data;
 
         if (Array.isArray(events)) {
             const { data } = await this.getEventSubscriptions(serviceName);
-
             const eventSubscriptions = new Set<string>(data.map(es => es.eventName));
-
-            events.forEach(
-                (event) => event.checked = eventSubscriptions.has(event.name)
-            );
-
+            events.forEach((event) => event.checked = eventSubscriptions.has(event.name));
             this.setEvents(events);
         }
     }
@@ -46,7 +36,7 @@ class EventStore {
         const body = {eventName: eventName, serviceName: serviceName};
 
         axios.post(this.subscriptionPath, body)
-            .then((response) => response.status === HttpConstant.HTTP_CREATED)
+            .then((response) => response.status === HttpStatus.CREATED)
             .then((checked) => this.updateEventSubscriptions(eventName, checked))
             .catch(() => alert("Не удалось подписаться на событие"));
     }
@@ -58,29 +48,13 @@ class EventStore {
         ]);
 
         axios.delete(this.subscriptionPath, {params: params})
-            .then((response) => response.status === HttpConstant.HTTP_OK)
+            .then((response) => response.status === HttpStatus.OK)
             .then((checked) => this.updateEventSubscriptions(eventName, !checked))
             .catch(() => alert("Не удалось отписаться от события"));
     }
 
     public setEvents(events: IEvent[]) {
         this.events = events;
-    }
-
-    public getEvents() {
-        return this.events;
-    }
-
-    public getEventByName = (eventName: string) => {
-        return this.events.find(event => event.name === eventName);
-    }
-    
-    public getEventByCaption = (eventCaption: string) => {
-        return this.events.find(event => event.caption === eventCaption);
-    }
-
-    public setCurrentEvent = (event: IEvent) => {
-        this.currentEvent = event;
     }
 
     private updateEventSubscriptions = (eventName: string, checked: boolean) => {

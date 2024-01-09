@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import SubscriptionForm from "./components/SubscriptionForm";
+import SubscriptionForm from "./components/EventList";
 import eventStore from "./stores/EventStore";
 import serviceStore from "./stores/ServiceStore";
 import ServiceList from "./components/ServiceList";
