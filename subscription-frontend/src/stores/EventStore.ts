@@ -32,7 +32,7 @@ class EventStore {
         }
     }
 
-    public addEventSubscriptions = (eventName: string, serviceName: string) => {
+    public addEventSubscription = (eventName: string, serviceName: string) => {
         const body = {eventName: eventName, serviceName: serviceName};
 
         axios.post(this.subscriptionPath, body)
