@@ -26,7 +26,7 @@ const EventList: FC<IEventList> = ({ events, onEventCheck, onEventUncheck }) => 
                                 <Form.Check
                                     key={currentServiceName + event.name}
                                     label={event.caption}
-                                    onChange={() => onEventCheckChange(event.name)}
+                                    onChange={onEventCheckChange(event.name)}
                                     checked={event.checked}
                                 />
                         )
