@@ -19,11 +19,14 @@ class ServiceStore {
     }
 
     private async getServicesFromServer() {
-        const {data} = await axios
-            .get<IService[]>(getResourcePath("/api/services"));
+        try {
+            const { data } = await axios.get<IService[]>(getResourcePath("/api/services"));
 
-        if (Array.isArray(data)) {
-            this.setServices(data);
+            if (Array.isArray(data)) {
+                this.setServices(data);
+            }
+        } catch (e) {
+            alert("Service loading error");
         }
     }
 
