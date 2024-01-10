@@ -14,9 +14,14 @@ const SubscriptionPage = () => {
     useEffect(() => {
         if (services.length > 0) {
             setCurServiceName(services[0].name);
-            initEvents(services[0].name);
         }
     }, [services]);
+
+    useEffect(() => {
+        if (curServiceName !== "") {
+            initEvents(curServiceName);
+        }
+    }, [curServiceName]);
 
     const onEventCheck = (eventName: string) => {
         addEventSubscription(eventName, curServiceName);
@@ -28,7 +33,10 @@ const SubscriptionPage = () => {
 
     return (
         <div className="d-flex">
-            <ServiceList services={services}/>
+            <ServiceList
+                services={services}
+                onServiceClick={setCurServiceName}
+            />
             <EventList
                 events={events}
                 onEventCheck={onEventCheck}

@@ -1,20 +1,14 @@
 import React, {FC} from 'react';
 import {ListGroup, ListGroupItem} from "react-bootstrap";
-import serviceStore, {IService} from "../stores/ServiceStore";
+import {IService} from "../stores/ServiceStore";
 import {observer} from "mobx-react-lite";
-import eventStore from "../stores/EventStore";
 
 interface IServiceList {
     services: IService[];
+    onServiceClick: (serviceName: string) => void;
 }
 
-
-const ServiceList: FC<IServiceList> = ({ services }) => {
-    const onServiceClicked = (serviceName: string) => {
-        serviceStore.setCurrentServiceName(serviceName);
-        eventStore.initEvents(serviceName);
-    }
-
+const ServiceList: FC<IServiceList> = ({ services, onServiceClick }) => {
     return (
         <ListGroup
             style={{width: "20%"}}
@@ -25,7 +19,7 @@ const ServiceList: FC<IServiceList> = ({ services }) => {
                     service =>
                         <ListGroupItem
                             key={service.name}
-                            onClick={() => onServiceClicked(service.name)}
+                            onClick={() => onServiceClick(service.name)}
                         >
                             {service.caption}
                         </ListGroupItem>
