@@ -12,8 +12,6 @@ export interface IEvent {
 }
 
 class EventStore {
-    private subscriptionPath = getSubscriptionPath("/api/event-subs");
-
     events: IEvent[] = [];
 
     constructor() {
@@ -21,56 +19,60 @@ class EventStore {
     }
 
     public initEvents = async (serviceName: string) => {
-        const params = new URLSearchParams([["service-name", serviceName]]);
-        const events = (await axios.get<IEvent[]>(getResourcePath("/api/events"), {params: params})).data;
+        const urlParams = new URLSearchParams([["service-name", serviceName]]);
 
-        if (Array.isArray(events)) {
-            const { data } = await this.getEventSubscriptions(serviceName);
-            const eventSubscriptions = new Set<string>(data.map(es => es.eventName));
-            events.forEach((event) => event.checked = eventSubscriptions.has(event.name));
-            this.setEvents(events);
+        try {
+            const { data } = await axios.get<IEvent[]>(getResourcePath("/api/events"), {params: urlParams});
+
+            if (Array.isArray(data)) {
+                this.setEvents(data);
+            }
+        } catch (e) {
+            alert("Event loading error");
         }
     }
 
-    public addEventSubscription = (eventName: string, serviceName: string) => {
-        const body = {eventName: eventName, serviceName: serviceName};
+    public addEventSubscription = async (eventName: string, serviceName: string) => {
+        const requestBody = { eventName: eventName, serviceName: serviceName };
 
-        axios.post(this.subscriptionPath, body)
-            .then((response) => response.status === HttpStatus.CREATED)
-            .then((checked) => this.updateEventSubscriptions(eventName, checked))
-            .catch(() => alert("Не удалось подписаться на событие"));
+        try {
+            const response = await axios.post(getResourcePath("/api/events"), requestBody);
+
+            if (response.status === HttpStatus.CREATED) {
+                this.setEventChecked(eventName);
+            }
+        } catch (e) {
+            alert("Event subscription error");
+        }
     }
 
     public delEventSubscription = async (eventName: string, serviceName: string) => {
-        const params = new URLSearchParams([
+        const urlParams = new URLSearchParams([
             ["service-name", serviceName],
             ["event-name", eventName]
         ]);
 
-        axios.delete(this.subscriptionPath, {params: params})
-            .then((response) => response.status === HttpStatus.OK)
-            .then((checked) => this.updateEventSubscriptions(eventName, !checked))
-            .catch(() => alert("Не удалось отписаться от события"));
+        try {
+            const response = await axios.delete(getResourcePath("/api/events"), {params: urlParams});
+
+            if (response.status === HttpStatus.OK) {
+                this.setEventChecked(eventName, false);
+            }
+        } catch (e) {
+            alert("Event unsubscription error");
+        }
     }
 
     public setEvents(events: IEvent[]) {
         this.events = events;
     }
 
-    private updateEventSubscriptions = (eventName: string, checked: boolean) => {
+    private setEventChecked = (eventName: string, checked = true) => {
         this.events.forEach((event) => {
             if (event.name === eventName) {
                 event.checked = checked;
             }
         })
-    }
-
-    private getEventSubscriptions = (serviceName: string) => {
-        const params = new URLSearchParams([
-            ["service-name", serviceName]
-        ]);
-
-        return axios.get<{eventName: string}[]>(this.subscriptionPath, {params: params});
     }
 }
 
