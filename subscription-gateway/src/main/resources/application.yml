@@ -1,0 +1,38 @@
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+spring:
+  cloud:
+    gateway:
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedHeaders: "*"
+            allowedOrigins: "*"
+            allowedMethods: "*"
+      routes:
+        - id: add-event-subscription
+          uri: ${SUBSCRIPTION_SERVICE_URL:http://localhost:8086}
+          predicates:
+            - Path=/api/events
+            - Method=POST
+          filters:
+            - RewritePath=/api/events, /api/event-subs
+        - id: del-event-subscription
+          uri: ${SUBSCRIPTION_SERVICE_URL:http://localhost:8086}
+          predicates:
+            - Path=/api/events
+            - Method=DELETE
+            - Query=service-name
+            - Query=event-name
+          filters:
+            - RewritePath=/api/events, /api/event-subs
