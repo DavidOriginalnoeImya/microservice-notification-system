@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class SubscriptionService {
@@ -19,7 +19,7 @@ public class SubscriptionService {
                 .build();
     }
 
-    public Mono<Set<EventSubscriptionDTO>> getEventSubscriptions(String serviceName) {
+    public Mono<List<EventSubscriptionDTO>> getEventSubscriptions(String serviceName) {
         return webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
