@@ -4,6 +4,18 @@ services:
     image: subscription-frontend
     ports:
       - "3000:80"
+  subscription-gateway:
+    image: subscription-gateway
+    ports:
+      - "8087:8080"
+    environment:
+      SUBSCRIPTION_SERVICE_URL: http://subscription-service:8080
+      REGISTRATION_SERVICE_URL: http://registration-service:8080
+    depends_on:
+      - "kafka"
+      - "db"
+      - "registration-service"
+      - "subscription-service"
   subscription-service:
     image: subscription-service
     ports:
