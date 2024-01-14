@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import static ge.davab.subscriptiongateway.request.event.properties.RequestParam.SERVICE_NAME;
+
 @Component
 public class EventRouteHandler {
 
@@ -24,7 +26,7 @@ public class EventRouteHandler {
 
     public Mono<ServerResponse> getEvents(ServerRequest serverRequest) {
         String serviceName = serverRequest
-                .queryParam("service-name")
+                .queryParam(SERVICE_NAME)
                 .orElseThrow();
 
         var events = eventService.getEvents(serviceName);
