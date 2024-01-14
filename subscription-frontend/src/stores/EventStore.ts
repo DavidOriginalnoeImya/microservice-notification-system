@@ -1,7 +1,6 @@
 import {makeAutoObservable, observable} from "mobx";
 import axios from "axios";
 import getResourcePath from "../utils/getResourcePath";
-import getSubscriptionPath from "../utils/getSubscriptionPath";
 import {HttpStatus} from "../constants/HttpStatus";
 
 
@@ -36,7 +35,7 @@ class EventStore {
         const requestBody = { eventName: eventName, serviceName: serviceName };
 
         try {
-            const response = await axios.post(getResourcePath("/api/events"), requestBody);
+            const response = await axios.post(getResourcePath("/api/event-subs"), requestBody);
 
             if (response.status === HttpStatus.CREATED) {
                 this.setEventChecked(eventName);
@@ -53,7 +52,7 @@ class EventStore {
         ]);
 
         try {
-            const response = await axios.delete(getResourcePath("/api/events"), {params: urlParams});
+            const response = await axios.delete(getResourcePath("/api/event-subs"), {params: urlParams});
 
             if (response.status === HttpStatus.OK) {
                 this.setEventChecked(eventName, false);
