@@ -28,16 +28,12 @@ spring:
         - id: add-event-subscription
           uri: ${SUBSCRIPTION_SERVICE_URL:http://localhost:8086}
           predicates:
-            - Path=/api/events
+            - Path=/api/event-subs
             - Method=POST
-          filters:
-            - RewritePath=/api/events, /api/event-subs
         - id: del-event-subscription
           uri: ${SUBSCRIPTION_SERVICE_URL:http://localhost:8086}
           predicates:
-            - Path=/api/events
+            - Path=/api/event-subs
             - Method=DELETE
             - Query=service-name
             - Query=event-name
-          filters:
-            - RewritePath=/api/events, /api/event-subs
