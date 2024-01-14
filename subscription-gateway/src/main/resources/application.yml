@@ -20,6 +20,11 @@ spring:
             allowedOrigins: "*"
             allowedMethods: "*"
       routes:
+        - id: get-services
+          uri: ${REGISTRATION_SERVICE_URL:http://localhost:8085}
+          predicates:
+            - Path=/api/services
+            - Method=GET
         - id: add-event-subscription
           uri: ${SUBSCRIPTION_SERVICE_URL:http://localhost:8086}
           predicates:
